@@ -51,9 +51,10 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
     
     def click(self) :    
-         paint = QtGui.QPainter(self.widget)
-         paint.drawRect(500,200,50,50)
+         #paint = QtGui.QPainter(self.widget)
+         #paint.drawRect(500,200,50,50)
          print("pressed")    
+         #self.widget.update()
         
     def paintEvent(self, event):             # event de type QPaintEvent
         painter = QtGui.QPainter(self.widget)             # recupere le QPainter du widget

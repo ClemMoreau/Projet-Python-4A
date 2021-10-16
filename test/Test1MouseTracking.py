@@ -11,11 +11,11 @@ import sys
 
 class Dessin(QWidget):
 
-    painter = QPainter()
     def __init__(self):
         super().__init__()
         self.setMouseTracking(True) # on active le mouseTracking
         self.cursorPos = None
+        
     def mouseMoveEvent(self, event): # evenement mouseMove
         self.cursorPos = event.pos()    # on stocke la position du curseur
         self.update()    # on met à jour l'affichage
@@ -23,6 +23,7 @@ class Dessin(QWidget):
     #evenement QPaintEvent
     def paintEvent(self, event):
         if self.cursorPos != None:
+            painter = QPainter(self)
             painter.drawEllipse(\
             self.cursorPos.x()-5,\
             self.cursorPos.y()-5,10,10) # On dessine l'ellipse autour du curseur
