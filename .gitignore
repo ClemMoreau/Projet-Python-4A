@@ -1,2 +1,3 @@
-Projet4A\.spyproject
-Projet4A\Interface\__pycache__
+Projet4A/.spyproject/*
+Projet4A/Interface/*__pycache__/*
+Projet4A/Interface/__init__.py
