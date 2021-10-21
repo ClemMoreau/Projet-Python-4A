@@ -5,14 +5,17 @@ Created on Wed Oct 13 16:54:22 2021
 @author: cleme
 """
 
-import pavage as pav
-from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 
-class GraphicInterface(QtWidgets.QWidget):
+from PyQt5 import QtCore, QtGui, QtWidgets, Qt
+import pavage as pav
+
+class GraphicInterface(object):
     
-    def __init__(self, widget):
+    def __init__(self, size):
        # super.__init__(widget)
-        self.setGraphicInterface(widget)
+       self.widget = QtWidgets.QWidget()
+       self.setGraphicInterface(self.widget)
+       self.size = size
     
     def setGraphicInterface(self, widget):
         widget.resize(250, 300)
@@ -42,4 +45,7 @@ class GraphicInterface(QtWidgets.QWidget):
     
     def click(self):
         print("pressed")
-        pav.test()    
+        win = QtWidgets.QMainWindow()
+        pavage = pav.Pavage(self.size)
+        win.setCentralWidget(pavage)
+        win.show()

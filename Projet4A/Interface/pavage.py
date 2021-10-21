@@ -7,10 +7,12 @@ Created on Thu Oct 14 17:22:13 2021
 
 from PyQt5 import QtWidgets, QtGui, QtCore
 
+
 class Pavage(QtWidgets.QWidget):
     
-    def __init__(self, graphicinterface, app):
-        self.size = app.primaryScreen().size().width()
+    def __init__(self,size):
+        super().__init__()
+        self.size = size
       
     #evenement QPaintEvent
     def paintEvent(self, event):   # event de type QPaintEvent
@@ -28,11 +30,3 @@ class Pavage(QtWidgets.QWidget):
                 polygon << QtCore.QPoint(0+k*taille,taille+m*taille)
                 painter.drawPolygon(polygon)
         return
-        
-def test():
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    w = QtWidgets.QWidget()
-    ui = Pavage(w, app)
-    w.show()
-    sys.exit(app.exec_())
