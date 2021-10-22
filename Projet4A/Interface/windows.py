@@ -7,7 +7,7 @@ Created on Mon Oct 18 13:38:33 2021
 
 from PyQt5 import QtWidgets
 
-class windows(QtWidgets.QMainWindow):
+class windows(object):
     
             #############
             #CONSTRUCTOR#
@@ -15,10 +15,9 @@ class windows(QtWidgets.QMainWindow):
             
    #Changer size (tuple) en deux int ?
     def __init__(self, size):
-        QtWidgets.QMainWindow.__init__(self)
         self.window = QtWidgets.QMainWindow()
-        self.windowMaxWidth = size[0]
-        self.windowMaxHeight = size[1]
+        self.windowWidth = size[0]
+        self.windowHeight = size[1]
         
             #########
             #GETTERS#
@@ -26,35 +25,36 @@ class windows(QtWidgets.QMainWindow):
             
     def getWindow(self):
         return self.window
-                
-    def getWindowMaxWidth(self):
-        return self.windowMaxWidth
+    
+    def getWindowWidth(self):
+        return self.windowWidth
         
-    def getWindowMaxHeight(self):
-        return self.windowMaxHeight
+    def getWindowHeight(self):
+        return self.windowHeight
     
             #########
             #SETTERS#
             #########
-            
+    
     def setWindow(self, newWindow):
         self.window = newWindow
     
-    def setWindowMaxWidth(self, size):
-        self.windowMaxWidth = size
+    def setWindowsWidth(self, size):
+        self.windowWidth = size
     
-    def setWindowMaxHeight(self, size):
-        self.windowMaxHeight = size
+    def setWindowsHeight(self, size):
+        self.windowHeight = size
         
     def setCentralWidget(self, widget):
         self.window.setCentralWidget(widget)
+        
         
             #########
             #METHODS#
             #########
             
     def modifyWindow(self):
-        self.window.resize(self.windowMaxWidth // 5, self.windowMaxHeight // 5)
-            
+        self.window.resize(self.windowWidth, self.windowHeight)
+                    
     def showWindow(self):
         self.window.show()

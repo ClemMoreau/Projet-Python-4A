@@ -9,21 +9,16 @@ import application, windows, settings
 import sys
 
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    win = QtWidgets.QMainWindow()
-    setting = settings.settings((app.primaryScreen().size().width(),app.primaryScreen().size().height()),win)
-    win.resize(260,250)
-    win.show()
-    sys.exit(app.exec_())
-    """
+
+    mainApp = application.application()
+    maxScreenSize = (mainApp.getApp().primaryScreen().size().width()
+                     ,mainApp.getApp().primaryScreen().size().height())
     
-    #w = windows.windows((app.primaryScreen().size().width(),app.primaryScreen().size().height()))
-    #w.setCentralWidget(setting.getWidget())
-    #w.showWindow()
+    mainWindow = windows.windows((260,250))
     
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = settings.settings((800,600),MainWindow)
-    #ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())"""
+    settingWidget = settings.settings(maxScreenSize,mainWindow.getWindow())
+    
+    mainWindow.modifyWindow()
+    mainWindow.showWindow()
+    
+    mainApp.exitApp()

@@ -51,4 +51,4 @@ class application(object):
             #########
         
     def exitApp(self):
-        sys.exit(self.mainApplication)
+        sys.exit(self.mainApplication.exec_())

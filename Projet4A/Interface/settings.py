@@ -26,6 +26,8 @@ class settings(object):
         win.setCentralWidget(self.widget)
 
         self.setGraphicInterface()
+        
+        self.win = win
             
             #########
             #GETTERS#
@@ -75,7 +77,7 @@ class settings(object):
     def setGraphicInterface(self):
         
         #To set same size with the window
-        self.widget.resize(260,250)
+        #self.widget.resize(260,250)
         
         #Text label TypeOfPoly
         self.label = QtWidgets.QLabel(self.widget)
@@ -110,6 +112,9 @@ class settings(object):
         self.pushButton.setText("Dessiner !")
         self.pushButton.clicked.connect(self.click)
         
-    def click(self):
-        print("pressed")
+    def click(self):       
         
+        self.setNbPolygone(self.spinBox.value())
+       
+        self.win.setCentralWidget(pav.Pavage((self.widgetMaxWidth,self.widgetMaxHeight),self.getNbPolygone(),self.comboBox.currentText()))
+        self.win.show()

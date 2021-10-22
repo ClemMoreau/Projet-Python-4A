@@ -46,3 +46,6 @@ class Pavage(QtWidgets.QWidget):
                 painter.drawLine(0.5*taille + k*taille, taille * m * ((math.sqrt(3))/2) + taille*(math.sqrt(3))/2,0.5*taille + (k+1)*taille,taille * m * ((math.sqrt(3))/2) + taille*(math.sqrt(3))/2)
                 
         return
+    
+
+        
