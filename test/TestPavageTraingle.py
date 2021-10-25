@@ -45,15 +45,27 @@ class Dessin(QtWidgets.QWidget):
                     painter.drawPolygon(polygon)
                     
                 else :
-                    #Si m est impair on  dessine des trainlge orienté vers le haut
+                    #Si m est impair on  dessine des trianlge orienté vers le haut
+                    polygon = QtGui.QPolygon()
                     polygon << QtCore.QPoint(0.5*taille + k*taille,0+m*taille * ((math.sqrt(3))/2))
                     polygon << QtCore.QPoint(0 + k * taille, taille * m * ((math.sqrt(3))/2) + taille*(math.sqrt(3))/2 )
                     polygon << QtCore.QPoint(taille + k * taille, taille * m * ((math.sqrt(3))/2) + taille*(math.sqrt(3))/2 )
                     painter.drawPolygon(polygon)
                 
                 #A chaque itération on dessine les segments qui finissent les triangles non tracés
-                painter.drawLine(0,0+m*taille * ((math.sqrt(3))/2),0.5*taille,0+m*taille * ((math.sqrt(3))/2))
-                painter.drawLine(0.5*taille + k*taille, taille * m * ((math.sqrt(3))/2) + taille*(math.sqrt(3))/2,0.5*taille + (k+1)*taille,taille * m * ((math.sqrt(3))/2) + taille*(math.sqrt(3))/2)
+                polygon = QtGui.QPolygon()
+                polygon << QtCore.QPoint(0,0+m*taille * ((math.sqrt(3))/2))
+                polygon << QtCore.QPoint(0.5*taille,0+m*taille * ((math.sqrt(3))/2))
+                painter.drawPolygon(polygon)
+                
+                polygon = QtGui.QPolygon()
+                polygon << QtCore.QPoint(0.5*taille + k*taille, taille * m * ((math.sqrt(3))/2) + taille*(math.sqrt(3))/2)
+                polygon << QtCore.QPoint(0.5*taille + (k+1)*taille,taille * m * ((math.sqrt(3))/2) + taille*(math.sqrt(3))/2)
+                painter.drawPolygon(polygon)
+
+
+                #painter.drawLine(0,0+m*taille * ((math.sqrt(3))/2),0.5*taille,0+m*taille * ((math.sqrt(3))/2))
+                #painter.drawLine(0.5*taille + k*taille, taille * m * ((math.sqrt(3))/2) + taille*(math.sqrt(3))/2,0.5*taille + (k+1)*taille,taille * m * ((math.sqrt(3))/2) + taille*(math.sqrt(3))/2)
                 
         return
     

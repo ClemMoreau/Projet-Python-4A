@@ -78,17 +78,28 @@ class Pavage(QtWidgets.QWidget):
                     
                 else :
                     #Si m est impair on  dessine des trainlge orienté vers le haut
+                    polygon = QtGui.QPolygon()
                     polygon << QtCore.QPoint(0.5*self.length + k*self.length,0+m*self.length * ((math.sqrt(3))/2))
                     polygon << QtCore.QPoint(0 + k * self.length, self.length * m * ((math.sqrt(3))/2) + self.length*(math.sqrt(3))/2 )
                     polygon << QtCore.QPoint(self.length + k * self.length, self.length * m * ((math.sqrt(3))/2) + self.length*(math.sqrt(3))/2 )
                     painter.drawPolygon(polygon)
                     
+                self.listOfPolygon.append(polygon)
+                
+                #A chaque itération on dessine les segments qui finissent les triangles non tracés
+                polygon = QtGui.QPolygon()
+                polygon << QtCore.QPoint(0,0+m*self.length * ((math.sqrt(3))/2))
+                polygon << QtCore.QPoint(0.5*self.length,0+m*self.length * ((math.sqrt(3))/2))
+                painter.drawPolygon(polygon)
                 
                 self.listOfPolygon.append(polygon)
-                """modif ça en polygon"""
-                #A chaque itération on dessine les segments qui finissent les triangles non tracés
-                painter.drawLine(0,0+m*self.length * ((math.sqrt(3))/2),0.5*self.length,0+m*self.length * ((math.sqrt(3))/2))
-                painter.drawLine(0.5*self.length + k*self.length, self.length * m * ((math.sqrt(3))/2) + self.length*(math.sqrt(3))/2,0.5*self.length + (k+1)*self.length,self.length * m * ((math.sqrt(3))/2) + self.length*(math.sqrt(3))/2)
+
+                
+                polygon = QtGui.QPolygon()
+                polygon << QtCore.QPoint(0.5*self.length + k*self.length, self.length * m * ((math.sqrt(3))/2) + self.length*(math.sqrt(3))/2)
+                polygon << QtCore.QPoint(0.5*self.length + (k+1)*self.length,self.length * m * ((math.sqrt(3))/2) + self.length*(math.sqrt(3))/2)
+                painter.drawPolygon(polygon)
+                self.listOfPolygon.append(polygon)
                     
     def drawHexagon(self):
         painter = QtGui.QPainter(self)  
