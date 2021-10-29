@@ -4,7 +4,7 @@ Created on Sat Oct  9 15:11:40 2021
 
 @author: cleme
 """
-from PyQt5.QtCore import *
+from PyQt5.QtCore import __all__
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import sys

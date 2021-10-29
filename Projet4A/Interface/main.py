@@ -11,14 +11,14 @@ import sys
 if __name__ == "__main__":
 
     mainApp = application.application()
-    maxScreenSize = (mainApp.getApp().primaryScreen().size().width()
-                     ,mainApp.getApp().primaryScreen().size().height())
+    maxScreenSize = (mainApp.get_app().primaryScreen().size().width()
+                     ,mainApp.get_app().primaryScreen().size().height())
     
     mainWindow = windows.windows((260,250))
     
-    settingWidget = settings.settings(maxScreenSize,mainWindow.getWindow())
+    settingWidget = settings.settings(maxScreenSize,mainWindow.get_window())
     
-    mainWindow.modifyWindow()
-    mainWindow.showWindow()
+    mainWindow.modify_window()
+    mainWindow.show_window()
     
-    mainApp.exitApp()
+    mainApp.exit_app()

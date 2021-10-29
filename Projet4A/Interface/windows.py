@@ -15,37 +15,40 @@ class windows(object):
             
    #Changer size (tuple) en deux int ?
     def __init__(self, size):
+        
         self.window = QtWidgets.QMainWindow()
+        
         self.windowWidth = size[0]
+        
         self.windowHeight = size[1]
         
             #########
             #GETTERS#
             #########
             
-    def getWindow(self):
+    def get_window(self):
         return self.window
     
-    def getWindowWidth(self):
+    def get_window_width(self):
         return self.windowWidth
         
-    def getWindowHeight(self):
+    def get_window_height(self):
         return self.windowHeight
     
             #########
             #SETTERS#
             #########
     
-    def setWindow(self, newWindow):
+    def set_window(self, newWindow):
         self.window = newWindow
     
-    def setWindowsWidth(self, size):
+    def set_windows_width(self, size):
         self.windowWidth = size
     
-    def setWindowsHeight(self, size):
+    def set_windows_weight(self, size):
         self.windowHeight = size
         
-    def setCentralWidget(self, widget):
+    def set_central_widget(self, widget):
         self.window.setCentralWidget(widget)
         
         
@@ -53,8 +56,8 @@ class windows(object):
             #METHODS#
             #########
             
-    def modifyWindow(self):
+    def modify_window(self):
         self.window.resize(self.windowWidth, self.windowHeight)
                     
-    def showWindow(self):
+    def show_window(self):
         self.window.show()

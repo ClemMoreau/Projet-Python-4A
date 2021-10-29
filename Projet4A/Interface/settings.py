@@ -25,7 +25,7 @@ class settings(object):
         win.resize(size[0],size[1])
         win.setCentralWidget(self.widget)
 
-        self.setGraphicInterface()
+        self.set_graphic_interface()
         
         self.win = win
             
@@ -33,40 +33,40 @@ class settings(object):
             #GETTERS#
             #########
     
-    def getNbPolygone(self):
+    def get_nb_polygon(self):
         return self.nbPolyPerLine
     
-    def getTypeOfPoly(self):
+    def get_type_of_poly(self):
         return self.typeOfPoly
 
-    def getWidget(self):
+    def get_widget(self):
         return self.widget
     
-    def getWidgetMaxWidth(self):
+    def get_widget_max_width(self):
         return self.widgetMaxWidth
     
-    def getWidgetMaxHeight(self):
+    def get_widget_max_height(self):
         return self.widgetMaxHeights
 
             #########
             #SETTERS#
             #########
             
-    def setTypeOfPoly(self, polyName):
+    def set_type_of_poly(self, polyName):
         self.typeOfPoly = polyName        
     
-    def setNbPolygone(self, nb):
+    def set_nb_polygon(self, nb):
         if(nb >= 0):
             self.nbPolyPerLine = nb
     
-    def setWidget(self, widget):
+    def set_widget(self, widget):
         self.widget = widget
         
-    def setWidgetMaxWidth(self, size):
+    def set_widget_max_width(self, size):
         if(size >= 0):
             self.widgetMaxWidth = size
             
-    def setWidgetMaxHeight(self, size):
+    def set_widget_max_height(self, size):
         if(size >= 0):
             self.widgetMaxHeight= size
         
@@ -74,10 +74,10 @@ class settings(object):
             #METHODS#
             #########
             
-    def setGraphicInterface(self):
+    def set_graphic_interface(self):
         
         #To set same size with the window
-        #self.widget.resize(260,250)
+        self.widget.resize(260,250)
         
         #Text label TypeOfPoly
         self.label = QtWidgets.QLabel(self.widget)
@@ -109,12 +109,12 @@ class settings(object):
         self.pushButton = QtWidgets.QPushButton(self.widget)
         self.pushButton.setGeometry(QtCore.QRect(90, 150, 90, 50))
         self.pushButton.setObjectName("pushButton")
-        self.pushButton.setText("Dessiner !")
+        self.pushButton.setText("Draw !")
         self.pushButton.clicked.connect(self.click)
         
     def click(self):       
         
-        self.setNbPolygone(self.spinBox.value())
+        self.set_nb_polygon(self.spinBox.value())
        
-        self.win.setCentralWidget(pav.Pavage((self.widgetMaxWidth,self.widgetMaxHeight),self.getNbPolygone(),self.comboBox.currentText()))
+        self.win.setCentralWidget(pav.Pavage((self.widgetMaxWidth,self.widgetMaxHeight),self.get_nb_polygon(),self.comboBox.currentText()))
         self.win.show()

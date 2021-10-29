@@ -15,8 +15,11 @@ class application(object):
             #############    
             
     def __init__(self):
+        
         self.mainApplication = QtWidgets.QApplication(sys.argv)
+        
         self.screenWidth = self.mainApplication.primaryScreen().size().width()
+        
         self.screenHeight = self.mainApplication.primaryScreen().size().height()
             
             #########
@@ -24,31 +27,31 @@ class application(object):
             #########
     
     #useless?
-    def getApp(self):
+    def get_app(self):
         return self.mainApplication
 
-    def getScreenHeight(self):
+    def get_screen_height(self):
         return self.screenHeight
         
-    def getScreenWidth(self):
+    def get_screen_width(self):
         return self.screenWidth
  
             #########
             #SETTERS#
             #########
             
-    def setApp(self, application):
+    def set_app(self, application):
         self.mainApplication = application
 
-    def setScreenWidth(self, size):
+    def set_screen_width(self, size):
         self.screenHeight = size        
     
-    def setScreenHeight(self, size):
+    def set_screen_height(self, size):
         self.screenHeight = size
         
             #########
             #METHODS#
             #########
         
-    def exitApp(self):
+    def exit_app(self):
         sys.exit(self.mainApplication.exec_())
