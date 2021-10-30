@@ -6,38 +6,67 @@ Created on Fri Oct 22 23:10:12 2021
 """
 
 from PyQt5 import QtWidgets, QtGui, QtCore, Qt
+import math
 
 class Contain(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setMouseTracking(True) # on active le mouseTracking
         self.cursorPos = None
-        rect = QtGui.QPolygonF()
-        rect << QtCore.QPoint(10,100)
-        print(rect.at(0))
-        rect << QtCore.QPoint(200,100)
-        print(rect.at(1))
-        rect << QtCore.QPoint(200,200)
-        print(rect.at(2))
-        rect << QtCore.QPoint(10,200)
-        print(rect.at(3))
-        self.poly = rect
+        self.numberPolygonPerLine = 52
+        self.length = 1600//self.numberPolygonPerLine
+        self.numberPolygonPerColumn = 1600//self.length
+        self.listOfPolygon = []
         self.add = False
+        self.first = True
         
+    def draw_rect(self):
+        if(self.first):
+            #painter = QtGui.QPainter(self)
+            
+            for i in range(-1, (self.numberPolygonPerLine + 2)):
+            
+                
+                if (i % 2 == 0):
+                    paint = True
+                else:
+                    paint = False
+                    
+                for j in range(-1, (self.numberPolygonPerColumn + 1)):
+                    if(paint):
+                        polygon = QtGui.QPolygonF()
+                        
+                        abscissa = (i * self.length)
+                        ordinate = (j * self.length)
+                        
+                        #Top-Left point
+                        polygon << QtCore.QPointF(abscissa, ordinate)
+                        #Top-Right point
+                        polygon << QtCore.QPointF(self.length + abscissa, ordinate)
+                        #Bot-right point
+                        polygon << QtCore.QPointF(self.length + abscissa, self.length + ordinate)
+                        #Bot-left point
+                        polygon << QtCore.QPointF(abscissa, self.length + ordinate)
+                        
+                        #painter.drawPolygon(polygon)
+                        
+                        self.listOfPolygon.append(polygon)
+                    paint = not paint
+                    self.first = False
         
-    def mouseMoveEvent(self, event): # evenement mouseMove
-        self.cursorPos = event.pos()    # on stocke la position du curseur
-
     def paintEvent(self, event):
+       self.draw_rect()
        painter = QtGui.QPainter(self)
-       
-       painter.drawPolygon(self.poly)
+       for poly in self.listOfPolygon:
+           painter.drawPolygon(poly)
     
     def mouseReleaseEvent(self, event): # evenement mouseRelease
-        if(self.add):
-            self.pEnd = event.pos()
-            print(self.indice)
-            self.poly.insert(self.indice+1,self.pEnd)
+        if(self.add):  
+            
+            
+            self.listOfPolygon[self.poly].insert(self.indice,event.pos())
+            for i in range (0,self.listOfPolygon[self.poly].count()):
+                print(i ," ", self.listOfPolygon[self.poly].at(i))
             self.update()
             self.add = False
         
@@ -45,16 +74,22 @@ class Contain(QtWidgets.QWidget):
     def mousePressEvent(self, event): # evenement mousePress
         self.pStart = event.pos()
         print("press: ", self.pStart) 
-        poly =QtGui.QPolygonF()
-        poly << self.pStart
-        if (self.poly.intersects(poly)):
-            for i in range(0,self.poly.count()):
-                if(self.poly.at(i).x() - 5 < self.pStart.x() < self.poly.at(i+1).x() + 5 and
-                   self.poly.at(i).y() - 5 < self.pStart.y() < self.poly.at(i+1).y() + 5):
-                    print("in")
-                    self.add = True
-                    self.indice = i
-                    print(i)
+        
+        for j in range(0,len(self.listOfPolygon)):
+            for i in range (0,self.listOfPolygon[j].count() + 1):
+                if (self.add == False):
+                    
+                    X = (min(self.listOfPolygon[j].at(i % self.listOfPolygon[j].count()).x() - 10,self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).x() + 10),
+                        max(self.listOfPolygon[j].at(i % self.listOfPolygon[j].count()).x() - 10,self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).x() + 10))
+                    Y = (min(self.listOfPolygon[j].at(i % self.listOfPolygon[j].count()).y() - 10,self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).y() + 10),
+                        max(self.listOfPolygon[j].at(i % self.listOfPolygon[j].count()).y() - 10,self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).y() + 10))
+                    
+                    if(X[0] < self.pStart.x() < X[1] and Y[0] < self.pStart.y() < Y[1]):
+                        self.indice = i + 1
+                        self.poly = j
+                        print("depuis press ",i)
+                        self.add = True
+                    
            
 import sys
 app = QtWidgets.QApplication(sys.argv)
