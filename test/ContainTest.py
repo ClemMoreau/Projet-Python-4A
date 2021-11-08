@@ -7,6 +7,7 @@ Created on Fri Oct 22 23:10:12 2021
 
 from PyQt5 import QtWidgets, QtGui, QtCore, Qt
 import math
+import numpy as np
 
 TRIANGLE_CONST = math.sqrt(3)/2
 
@@ -96,6 +97,9 @@ class Contain(QtWidgets.QWidget):
                point = QtCore.QPointF(vector[0] + self.listOfPolygon[j].at((self.indice - 1)).x(),vector[1] + self.listOfPolygon[j].at(self.indice - 1).y())
                self.listOfPolygon[j].insert(self.indice,point)
                
+               #point2 = QtCore.QPointF(vector[0] + self.listOfPolygon[j].at(self.listOfPolygon[j].count()/2 + self.indice).x(),vector[1] + self.listOfPolygon[j].at(self.listOfPolygon[j].count()/2 + self.indice).y())
+               #self.listOfPolygon[j].insert(self.listOfPolygon[j].count() - self.indice + 1,point2)
+               
             self.update()
             self.add = False
         
@@ -106,7 +110,6 @@ class Contain(QtWidgets.QWidget):
         for j in range(0,len(self.listOfPolygon)):
             for i in range (0,self.listOfPolygon[j].count() + 1):
                 if (self.add == False):
-                   
                     
                     X = (min(self.listOfPolygon[j].at(i % self.listOfPolygon[j].count()).x() - 10,self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).x() + 10),
                         max(self.listOfPolygon[j].at(i % self.listOfPolygon[j].count()).x() - 10,self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).x() + 10))
@@ -114,15 +117,23 @@ class Contain(QtWidgets.QWidget):
                         max(self.listOfPolygon[j].at(i % self.listOfPolygon[j].count()).y() - 10,self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).y() + 10))
                     
                     if(X[0] < self.pStart.x() < X[1] and Y[0] < self.pStart.y() < Y[1]):
-                        self.indice = i + 1
-                        self.poly = j
-                        self.add = True
-                    
+                       
+                        V = np.array([self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).x() - self.listOfPolygon[j].at((i)% self.listOfPolygon[j].count()).x(),self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).y() - self.listOfPolygon[j].at((i)% self.listOfPolygon[j].count()).y()])
+                        U = np.array([self.pStart.x() - self.listOfPolygon[j].at((i)% self.listOfPolygon[j].count()).x(), self.pStart.y() - self.listOfPolygon[j].at((i)% self.listOfPolygon[j].count()).y()])
+                       
+                        proj = (np.dot(U, V)/np.dot(V, V))*V
+                        print('u-porj',U-proj)
+                        
+                        
+                        if (all((U-proj) <= 3)):
+                            self.indice = i + 1
+                            self.poly = j
+                            self.add = True                        
            
 import sys
 app = QtWidgets.QApplication(sys.argv)
 MainWindow = QtWidgets.QMainWindow()
 c = Contain()
 MainWindow.setCentralWidget(c)
-MainWindow.show()
+MainWindow.showMaximized()
 sys.exit(app.exec_())

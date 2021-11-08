@@ -8,17 +8,22 @@ from PyQt5 import QtWidgets
 import application, windows, settings
 import sys
 
-if __name__ == "__main__":
+class Main:
+    
+    def main():
+        #launch the application
+        mainApp = QtWidgets.QApplication(sys.argv)
+        
+        #get the screen size used for the lenght of drawn polygons 
+        maxScreenSize = (mainApp.primaryScreen().size().width(),
+                         mainApp.primaryScreen().size().height())
+        
+        #call the first widget on the windows : settings
+        settingWidget = settings.settings(maxScreenSize)
+        
+        #used to kill everything
+        sys.exit(mainApp.exec_())
+        
 
-    mainApp = application.application()
-    maxScreenSize = (mainApp.get_app().primaryScreen().size().width()
-                     ,mainApp.get_app().primaryScreen().size().height())
-    
-    mainWindow = windows.windows((260,250))
-    
-    settingWidget = settings.settings(maxScreenSize,mainWindow.get_window())
-    
-    mainWindow.modify_window()
-    mainWindow.show_window()
-    
-    mainApp.exit_app()
+if __name__ == "__main__":
+    Main.main()

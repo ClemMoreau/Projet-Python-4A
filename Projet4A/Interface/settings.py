@@ -5,7 +5,7 @@ Created on Mon Oct 18 13:49:48 2021
 @author: cleme
 """
 
-import pavage as pav
+import tessellation as tess
 from PyQt5 import QtWidgets, QtCore
 
 class settings(object):
@@ -15,20 +15,23 @@ class settings(object):
         ############# 
     
     #Changer size (tuple) en deux int ?
-    def __init__(self, size, win):
+    def __init__(self, size):
+        #attributes used to drawn the tessellation
         self.nbPolyPerLine = 0
         self.typeOfPoly = ""
-        self.widget = QtWidgets.QWidget()
-        self.widgetMaxWidth = size[0]
-        self.widgetMaxHeight = size[1]
         
-        win.resize(size[0],size[1])
-        win.setCentralWidget(self.widget)
-
+        #The setting widget
         self.set_graphic_interface()
         
-        self.win = win
-            
+        #windows used to call the next widget
+        self.win = QtWidgets.QMainWindow()
+        self.win.setCentralWidget(self.widget)
+        self.win.resize(260,250)
+        self.win.show()
+
+        #Size for the calcul of polygon length
+        self.widgetMaxSize = size
+        
             #########
             #GETTERS#
             #########
@@ -42,11 +45,8 @@ class settings(object):
     def get_widget(self):
         return self.widget
     
-    def get_widget_max_width(self):
-        return self.widgetMaxWidth
-    
-    def get_widget_max_height(self):
-        return self.widgetMaxHeights
+    def get_widget_max_size(self):
+        return self.widgetMaxSize
 
             #########
             #SETTERS#
@@ -62,13 +62,9 @@ class settings(object):
     def set_widget(self, widget):
         self.widget = widget
         
-    def set_widget_max_width(self, size):
+    def set_widget_max_size(self, size):
         if(size >= 0):
-            self.widgetMaxWidth = size
-            
-    def set_widget_max_height(self, size):
-        if(size >= 0):
-            self.widgetMaxHeight= size
+            self.widgetMaxSize = size
         
             #########
             #METHODS#
@@ -77,6 +73,7 @@ class settings(object):
     def set_graphic_interface(self):
         
         #To set same size with the window
+        self.widget = QtWidgets.QWidget()
         self.widget.resize(260,250)
         
         #Text label TypeOfPoly
@@ -115,6 +112,9 @@ class settings(object):
     def click(self):       
         
         self.set_nb_polygon(self.spinBox.value())
+        self.set_type_of_poly(self.comboBox.currentText())
+        
+        tessellation = tess.Tessellation(self.get_widget_max_size(),self.get_nb_polygon(),self.get_type_of_poly())
        
-        self.win.setCentralWidget(pav.Pavage((self.widgetMaxWidth,self.widgetMaxHeight),self.get_nb_polygon(),self.comboBox.currentText()))
-        self.win.show()
+        self.win.setCentralWidget(tessellation)
+        self.win.showMaximized()

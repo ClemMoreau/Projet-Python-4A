@@ -4,7 +4,7 @@ Created on Sat Oct  9 15:11:40 2021
 
 @author: cleme
 """
-from PyQt5.QtCore import __all__
+from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import sys
@@ -18,7 +18,10 @@ class Dessin(QWidget):
         
     def mouseMoveEvent(self, event): # evenement mouseMove
         self.cursorPos = event.pos()    # on stocke la position du curseur
-        self.update()    # on met à jour l'affichage
+        self.update()    # on met à jour l'affichage7
+        
+    def mousePressEvent(self,event):
+        print(event.pos())
     
     #evenement QPaintEvent
     def paintEvent(self, event):
