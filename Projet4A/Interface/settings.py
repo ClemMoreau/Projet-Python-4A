@@ -61,10 +61,10 @@ class settings(object):
         self.widget.resize(260,250)
         
         #Text label TypeOfPoly
-        self.label_polygon_type = QtWidgets.QLabel(self.widget)
-        self.label_polygon_type.setGeometry(QtCore.QRect(40, 20, 200, 20))
-        self.label_polygon_type.setObjectName("label_polygon_type")
-        self.label_polygon_type.setText("Please choose a type of polygon to paint : ")
+        label_polygon_type = QtWidgets.QLabel(self.widget)
+        label_polygon_type.setGeometry(QtCore.QRect(40, 20, 200, 20))
+        label_polygon_type.setObjectName("label_polygon_type")
+        label_polygon_type.setText("Please choose a type of polygon to paint : ")
         
         #Combo Box containing TypeOfPoly
         self.combo_box_polygon_type = QtWidgets.QComboBox(self.widget)
@@ -75,28 +75,28 @@ class settings(object):
         self.combo_box_polygon_type.addItem("Hexagon")
         
         #Spin box to select number of polygon per line [5;+∞[
-        self.spin_box_polygon_type = QtWidgets.QSpinBox(self.widget)
-        self.spin_box_polygon_type.setGeometry(QtCore.QRect(200, 80, 42, 22))
-        self.spin_box_polygon_type.setMinimum(5)
-        self.spin_box_polygon_type.setObjectName("spin_box_polygon_type")
+        self.spin_box_number_poly_per_line = QtWidgets.QSpinBox(self.widget)
+        self.spin_box_number_poly_per_line.setGeometry(QtCore.QRect(200, 80, 42, 22))
+        self.spin_box_number_poly_per_line.setMinimum(5)
+        self.spin_box_number_poly_per_line.setObjectName("spin_box_number_poly_per_line")
         
         #Text label to chose number of polygon per line
-        self.label_polygon_per_line = QtWidgets.QLabel(self.widget)
-        self.label_polygon_per_line.setGeometry(QtCore.QRect(20, 80, 181, 21))
-        self.label_polygon_per_line.setObjectName("label_polygon_per_line")
-        self.label_polygon_per_line.setText("Please choose the number of polygon per line : ")
+        label_polygon_per_line = QtWidgets.QLabel(self.widget)
+        label_polygon_per_line.setGeometry(QtCore.QRect(20, 80, 181, 21))
+        label_polygon_per_line.setObjectName("label_polygon_per_line")
+        label_polygon_per_line.setText("Please choose the number of polygon per line : ")
         
         #Pushbutton to call the click function 
-        self.push_button_draw = QtWidgets.QPushButton(self.widget)
-        self.push_button_draw.setGeometry(QtCore.QRect(90, 150, 90, 50))
-        self.push_button_draw.setObjectName("push_button_draw")
-        self.push_button_draw.setText("Draw !")
-        self.push_button_draw.clicked.connect(self.button_click_action)
+        push_button_draw = QtWidgets.QPushButton(self.widget)
+        push_button_draw.setGeometry(QtCore.QRect(90, 150, 90, 50))
+        push_button_draw.setObjectName("push_button_draw")
+        push_button_draw.setText("Draw !")
+        push_button_draw.clicked.connect(self.button_click_action)
         
     def button_click_action(self):       
         
         polygon_type =  self.combo_box_polygon_type.currentText()       
-        nb_polygon_per_line = self.spin_box_polygon_type.value()
+        nb_polygon_per_line = self.spin_box_number_poly_per_line.value()
         
         if (polygon_type == "Square"):
             polygon = sq.Square(self.get_widget_max_size(), nb_polygon_per_line)

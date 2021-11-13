@@ -27,9 +27,9 @@ class Triangle(poly.Polygon):
             for i in range(0,self.nb_poly_per_line + 2):
                 
                 polygon = QtGui.QPolygonF()
-                polygon << QtCore.QPoint(point.x(), point.y())
-                polygon << QtCore.QPoint(point.x() + 0.5 * self.length, point.y() + TRIANGLE_CONST * self.length)
-                polygon << QtCore.QPoint(point.x() - 0.5 * self.length, point.y() + TRIANGLE_CONST * self.length)
+                polygon << QtCore.QPointF(point.x(), point.y())
+                polygon << QtCore.QPointF(point.x() + 0.5 * self.length, point.y() + TRIANGLE_CONST * self.length)
+                polygon << QtCore.QPointF(point.x() - 0.5 * self.length, point.y() + TRIANGLE_CONST * self.length)
                 
                 point.setX(point.x() + self.length)
                     

@@ -17,14 +17,6 @@ class Hexagon(poly.Polygon):
 #   METHODS
 #==============================================================================
         
-        #evenement QPaintEvent
-    def paintEvent(self, event):   # event de type QPaintEvent
-        # recupere le QPainter du widget
-        painter = QtGui.QPainter(self)
-        for polygon in self.polygon_list:
-            painter.drawPolygon(polygon)
-     
-
     def generate_poly(self):
             
         polygon_list = []
@@ -44,24 +36,24 @@ class Hexagon(poly.Polygon):
                     
                     
                 if (j%2 == 0) :
-                    polygon = QtGui.QPolygon()
-                    polygon << QtCore.QPoint((TRIANGLE_CONST) * self.length + i * self.length * math.sqrt(3),  self.length * j *1.5)
+                    polygon = QtGui.QPolygonF()
+                    polygon << QtCore.QPointF((TRIANGLE_CONST) * self.length + i * self.length * math.sqrt(3),  self.length * j *1.5)
                     #point haut gauche
-                    polygon << QtCore.QPoint(0 + i*self.length*math.sqrt(3), 0.5* self.length + j  * self.length * 1.5)
+                    polygon << QtCore.QPointF(0 + i*self.length*math.sqrt(3), 0.5* self.length + j  * self.length * 1.5)
                     #point bas gauche 
-                    polygon << QtCore.QPoint(0+ i * self.length* math.sqrt(3),1.5 * self.length +   self.length * j *1.5  )
+                    polygon << QtCore.QPointF(0+ i * self.length* math.sqrt(3),1.5 * self.length +   self.length * j *1.5  )
                     #point bas milieu
-                    polygon << QtCore.QPoint((TRIANGLE_CONST) * self.length + i * self.length * math.sqrt(3), 2 * self.length + 1.5 * self.length * j)
+                    polygon << QtCore.QPointF((TRIANGLE_CONST) * self.length + i * self.length * math.sqrt(3), 2 * self.length + 1.5 * self.length * j)
                     #point bas droite
-                    polygon << QtCore.QPoint(math.sqrt(3)*self.length + HEXAGON_CONST*self.length * i, 1.5 * self.length + 1.5 * j * self.length)
+                    polygon << QtCore.QPointF(math.sqrt(3)*self.length + HEXAGON_CONST*self.length * i, 1.5 * self.length + 1.5 * j * self.length)
                     #point haut droite
-                    polygon << QtCore.QPoint(math.sqrt(3)*self.length + HEXAGON_CONST*self.length * i, self.length * 0.5 + self.length * j * 1.5 )
+                    polygon << QtCore.QPointF(math.sqrt(3)*self.length + HEXAGON_CONST*self.length * i, self.length * 0.5 + self.length * j * 1.5 )
                     polygon_list.append(polygon)            
                     
             
-                polygon2 = QtGui.QPolygon()
-                polygon2 << QtCore.QPoint((TRIANGLE_CONST) * self.length + i * self.length * HEXAGON_CONST,self.length * j * 2)
-                polygon2 << QtCore.QPoint((TRIANGLE_CONST) * self.length + i * self.length * HEXAGON_CONST, 3 * self.length * j)
-                polygon_list.append(polygon2)
+                #polygon2 = QtGui.QPolygonF()
+                #polygon2 << QtCore.QPointF((TRIANGLE_CONST) * self.length + i * self.length * HEXAGON_CONST,self.length * j * 2)
+                #polygon2 << QtCore.QPointF((TRIANGLE_CONST) * self.length + i * self.length * HEXAGON_CONST, 3 * self.length * j)
+                #polygon_list.append(polygon2)
 
         return polygon_list

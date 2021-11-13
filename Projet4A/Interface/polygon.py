@@ -14,8 +14,6 @@ class Polygon:
         self.nb_poly_per_column = round((self.nb_poly_per_line*self.size[1])/self.size[0]) #Trouvé le bon truc
 
         self.length = self.size[0]/self.nb_poly_per_line
-        
-        self.point_to_add = False
     
 #==============================================================================    
 #   GETTERS
@@ -33,8 +31,6 @@ class Polygon:
     def get_nb_poly_per_column(self):
         return self.nb_poly_per_column
     
-    def get_point_to_add(self):
-        return self.point_to_add
     
 #==============================================================================    
 #   SETTERS
@@ -51,17 +47,10 @@ class Polygon:
     def set_nb_poly_per_column(self, nb):
         if(nb > 0):
             self.nb_poly_per_column = nb
-            
-    def set_point_to_add(self, boolean):
-        self.point_to_add = boolean
         
 #==============================================================================    
 #   METHODS
 #==============================================================================
-            
-    def mousePressEvent(self, event): # evenement mousePress
-        self.pStart = event.pos()
-        print(self.pStart)
         
     def generate_poly(self):
         pass
