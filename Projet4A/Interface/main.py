@@ -1,12 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Oct 13 20:06:26 2021
-
-@author: cleme
-"""
 from PyQt5 import QtWidgets
-import application, windows, settings
-import sys
+import settings, sys
 
 class Main:
     

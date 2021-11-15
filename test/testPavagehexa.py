@@ -57,7 +57,6 @@ class Dessin(QtWidgets.QWidget):
                     polygon << QtCore.QPoint(math.sqrt(3)*taille + math.sqrt(3)*taille * k, taille * 0.5 + taille * m * 1.5 )
                     painter.drawPolygon(polygon)
                     
-                
             
                 polygon2 = QtGui.QPolygon()
                 polygon2 << QtCore.QPoint((math.sqrt(3)/2) * taille + k * taille * math.sqrt(3),taille * m * 2)

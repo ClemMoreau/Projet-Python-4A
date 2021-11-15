@@ -4,191 +4,216 @@ Created on Thu Oct 14 17:22:13 2021
 
 @author: cleme
 """
-import math, numpy as np
-from PyQt5 import QtWidgets, QtGui, QtCore
+import numpy as np, math
+from PyQt5 import QtWidgets, QtGui, QtCore, Qt
 
-TRIANGLE_CONST = math.sqrt(3)/2
-
+MARGIN_ALLOWED = 2
 
 class Tessellation(QtWidgets.QWidget):
     
-    def __init__(self,size,numberPolygonPerLine, typeofPolygon):
+    def __init__(self, polygon):
         super().__init__()
         
-        self.size = size
+        self.polygon = polygon
         
-        self.numberPolygonPerLine = numberPolygonPerLine
-        self.length = self.size[0]/self.numberPolygonPerLine
-        self.numberPolygonPerColumn = round((self.numberPolygonPerLine*self.size[1])/self.size[0])
-        print(self.numberPolygonPerColumn)
+        self.typeofPolygon = str(type(polygon))
         
-        self.coordinateOfPolygon = [[None for j in range(size[1] + 1)] for i in range(size[0] + 1)] #divide in coulumn
-        #self.coordinateOfPolygon = [[None for j in range(size[0] + 1)] for i in range(size[1] + 1)] #divide in lines
-        self.typeofPolygon = typeofPolygon
-        self.listOfPolygon = []        
+        self.polygon_list = self.polygon.generate_poly()    
         
-        if (self.typeofPolygon == "Square"):
-            self.draw_rect()  
-        if (self.typeofPolygon == "Triangle"):
-            self.draw_triangle()
-        if (self.typeofPolygon == "Hexagon"):
-            self.draw_hexagon()
+        self.polygon_coordinate = [[] for i in range(polygon.size[1] + 1)]
+        self.generate_coordinates()
+        
+        #faire une liste propre
+        self.fixed_points = []
+        self.generate_non_modifiable_point()
             
-        self.point_to_add = False
-      
+        self.point_to_move = False
+       
     #evenement QPaintEvent
     def paintEvent(self, event):   # event de type QPaintEvent
-     
         # recupere le QPainter du widget
         painter = QtGui.QPainter(self)
-        for poly in self.listOfPolygon:
+        
+        """painter.setBrush(Qt.QColor("yellow"))
+        background = QtGui.QPolygon()
+        background << QtCore.QPoint(0,0)
+        background << QtCore.QPoint(self.polygon.size[0],0)
+        background << QtCore.QPoint(self.polygon.size[0],self.polygon.size[1])
+        background << QtCore.QPoint(0,self.polygon.size[1])
+        painter.drawPolygon(background)"""
+        
+        painter.setBrush(Qt.QColor("cyan"))
+        for poly in self.polygon_list:
             painter.drawPolygon(poly)
-            
     
-    def draw_rect(self):
-            
-            for i in range(-1, (self.numberPolygonPerColumn + 1)):
-                
-                #boolean used to drawn on in two squares
-                if (i % 2 == 0):
-                    paint = True
-                else:
-                    paint = False
-                    
-                for j in range(-1, (self.numberPolygonPerLine + 1)):
-                    
-                    if(paint):
-                        #new polygon in the tessellation
-                        polygon = QtGui.QPolygonF()
-                        
-                        abscissa = (j * self.length)
-                        ordinate = (i * self.length)
-                        
-                        #Top-Left point
-                        polygon << QtCore.QPointF(abscissa, ordinate)
-                        #Top-Right point
-                        polygon << QtCore.QPointF(self.length + abscissa, ordinate)
-                        #Bot-right point
-                        polygon << QtCore.QPointF(self.length + abscissa, self.length + ordinate)
-                        #Bot-left point
-                        polygon << QtCore.QPointF(abscissa, self.length + ordinate)
-                        
-                        self.listOfPolygon.append(polygon)
-                        #pour éviter de dépasser de la liste, de toute façon on ne peux cliquer que sur l'écran
-                        if(0 <= int(polygon.at(0).x()) <= self.size[0] and 
-                           0 <= int(polygon.at(0).y()) <= self.size[1]):
-                            self.coordinateOfPolygon[int(polygon.at(0).x())][int(polygon.at(0).y())] = polygon
-                        
-                    paint = not paint
-        
-    def draw_triangle(self):
-        
-        point = QtCore.QPointF(-0.5 * self.length, -TRIANGLE_CONST * self.length)
-        for j in range(0,self.numberPolygonPerColumn + 2):               
-            
-            #end at numberPolygonPerLine + 2 to exceeds the screen
-            for i in range(0,self.numberPolygonPerLine + 2):
-                
-                polygon = QtGui.QPolygonF()
-                polygon << QtCore.QPoint(point.x(), point.y())
-                polygon << QtCore.QPoint(point.x() + 0.5 * self.length, point.y() + TRIANGLE_CONST * self.length)
-                polygon << QtCore.QPoint(point.x() - 0.5 * self.length, point.y() + TRIANGLE_CONST * self.length)
-                
-                point.setX(point.x() + self.length)
-                    
-                if(i == 0 and j%2==0):
-                    point_mem = polygon.at(2)
-                elif(i == 0 and j%2==1):
-                    point_mem  = polygon.at(1)
-                
-                self.listOfPolygon.append(polygon) 
-                #pour éviter de dépasser de la liste, de toute façon on ne peux cliquer que sur l'écran
-                if(0 <= int(polygon.at(0).x()) <= self.size[0] and 
-                   0 <= int(polygon.at(0).y()) <= self.size[1]):
-                    self.coordinateOfPolygon[int(polygon.at(0).x())][int(polygon.at(0).y())] = polygon
-                    
-            point = point_mem
-                    
-    def draw_hexagon(self):
-        for j in range(0,self.numberPolygonPerColumn+2):               
-            
-            for i in range(-1,self.numberPolygonPerLine+2):
-                
-                polygon = QtGui.QPolygonF()
         
     """DEBUT DE DEFORMATION NE MARCHE BIEN QU'AVEC LES TRIANGLES
     AVEC LES CARRES çA MARCHE MAIS POUR 1 TRAIT SUR 2 ET C'EST NORMAL VU QU'ON DESSIN LA MOITIE DES CARRES"""    
     def mouseReleaseEvent(self, event): # evenement mouseRelease
-        if(self.point_to_add):  
-            vector = (event.pos().x() - self.listOfPolygon[self.poly].at(self.indice - 1).x(), event.pos().y() - self.listOfPolygon[self.poly].at(self.indice - 1).y())  
-            for j in range(0,len(self.listOfPolygon) - 1):
-               point = QtCore.QPointF(vector[0] + self.listOfPolygon[j].at((self.indice - 1)).x(),vector[1] + self.listOfPolygon[j].at(self.indice - 1).y())
-               self.listOfPolygon[j].insert(self.indice,point)
+        if(self.point_to_move):  
+           self.update()
+           self.point_to_move = False
                
-            self.update()
-            self.point_to_add = False
         
+    def mouseMoveEvent(self, event):
+            if(self.point_to_move): 
+                self.modify_point_in_all(event.pos())
+                self.update()
        
     def mousePressEvent(self, event): # evenement mousePress
-        self.pStart = event.pos()
-        print(self.pStart)
+        self.last_point_added = event.pos()
         
-        """for j in range(0,len(self.listOfPolygon)):
-            
-            for i in range (0,self.listOfPolygon[j].count()):
-                    
-                    #Remplacer par un truc qui vérifie juste si projection est dans le segment
-                    #get the x coordinate of the i and i+1 point in the j polygon
-                    X = (min(self.listOfPolygon[j].at(i % self.listOfPolygon[j].count()).x() - 0,self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).x() + 0),
-                        max(self.listOfPolygon[j].at(i % self.listOfPolygon[j].count()).x() - 0,self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).x() + 0))
-                    
-                    #get the y coordinate of the i and i+1 point in the j polygon
-                    Y = (min(self.listOfPolygon[j].at(i % self.listOfPolygon[j].count()).y() - 0,self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).y() + 0),
-                        max(self.listOfPolygon[j].at(i % self.listOfPolygon[j].count()).y() - 0,self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).y() + 0))
-                    
-                    if(X[0] - 5 < self.pStart.x() < X[1] + 5 and Y[0] - 5 < self.pStart.y() < Y[1] + 5):
-                        
-                         V = np.array([self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).x() - self.listOfPolygon[j].at((i)% self.listOfPolygon[j].count()).x(),self.listOfPolygon[j].at((i+1)% self.listOfPolygon[j].count()).y() - self.listOfPolygon[j].at((i)% self.listOfPolygon[j].count()).y()])
-                         U = np.array([self.pStart.x() - self.listOfPolygon[j].at((i)% self.listOfPolygon[j].count()).x(), self.pStart.y() - self.listOfPolygon[j].at((i)% self.listOfPolygon[j].count()).y()])
-                        
-                         proj = (np.dot(U, V)/np.dot(V, V))*V
-
-                         #3 is the margin
-                         if (all((U-proj) <= 2) and
-                             all((U-proj) >= -2)):
-                             self.indice = i + 1
-                             self.poly = j
-                             self.point_to_add = True           
-            """
-        for i in range(-1,2):
-            liste = self.coordinateOfPolygon[int(event.pos().x())+i]
-            print(liste)
-            for poly in liste:
-                if(poly != None):
-                    for j in range(0,poly.count()):
-                        
-                        vector = np.array([poly.at((j+1) % poly.count()).x() - poly.at(j % poly.count()).x(), poly.at((j+1) % poly.count()).y() - poly.at(j % poly.count()).y()])
-                        vectorNewPoint = np.array([event.pos().x() - poly.at(j % poly.count()).x(),event.pos().y() - poly.at(j% poly.count()).y()])
-                        
-                        #calculate projection of vectorNewPoint on vector
-                        vectorProjection = (np.dot(vectorNewPoint, vector)/np.dot(vector,vector))*vector
-                        normeVector = math.sqrt(math.pow(vectorProjection[0],2)+math.pow(vectorProjection[1],2))
-                        print(normeVector)
-                        if (normeVector <= 10):
-                            print("yes")
-                            X = (min(poly.at((j+1) % poly.count()).x(),poly.at((j) % poly.count()).x()),
-                                 max(poly.at((j+1) % poly.count()).x(),poly.at((j) % poly.count()).x()))
-                            
-                            #get the y coordinate of the i and i+1 point in the j polygon
-                            Y = (min(poly.at((j+1) % poly.count()).y(),poly.at((j) % poly.count()).y()),
-                                 max(poly.at((j+1) % poly.count()).y(),poly.at((j) % poly.count()).y()))
-                            
-                            if (X[0] <= vectorProjection[0] <= X[1] and
-                                Y[0] <= vectorProjection[0] <= Y[1]):
-                                self.indice = j + 1
-                                self.poly = self.listOfPolygon.index(poly)
-                                self.point_to_add = True   
+        search_area = self.find_search_area(event.pos())
+        
+        for j in range(0,len(search_area)):
+            for i in range (0,search_area[j].count()):
                 
+                distance = self.vector_distance(self.line_to_vector(search_area[j].at(i % search_area[j].count()), event.pos()))
+                
+                if distance < 10 :
+                    if self.can_move(search_area[j].at(i % search_area[j].count())):
                     
-        #LE PASSEZ DANS UNE METHODE 'EST SUR SEGMENT POLYGONE' ?
+                        self.indice_in_poly = i
+                        self.indice_of_poly = self.get_corresponding_index(search_area[j])
+                        if(self.indice_of_poly != None):
+                            
+                            self.point_to_move = True
+                            self.modify_point_in_all(event.pos()) 
+                    return
+                    
+                   
+                distance_to_line = self.distance_point_line(search_area[j].at(i % search_area[j].count()),
+                                                            search_area[j].at((i + 1) % search_area[j].count()),
+                                                            event.pos())
+                
+                if (type(distance_to_line) != type(None)):
+                    
+                        if (distance_to_line[0] <= MARGIN_ALLOWED and
+                            distance_to_line[0] >= -MARGIN_ALLOWED and
+                            distance_to_line[1] <= MARGIN_ALLOWED and
+                            distance_to_line[1] >= -MARGIN_ALLOWED):
+                            
+                            self.indice_in_poly = i + 1
+                            self.indice_of_poly = self.get_corresponding_index(search_area[j])
+                            if(self.indice_of_poly != None):
+                                
+                                self.point_to_move = True    
+                                self.add_point_to_all(event.pos())
+                            
+                            return
+                            
+                            
+    def distance_point_line(self, line_start_point, line_end_point, point):
+        
+        #check if the point is between segment terminals 
+        X = (min(line_end_point.x(), line_start_point.x()),
+             max(line_end_point.x(), line_start_point.x()))
+        Y = (min(line_end_point.y(), line_start_point.y()),
+             max(line_end_point.y(), line_start_point.y()))
+        
+        if (X[0] == X[1] or Y[0] == Y[1]):
+            margin = 7
+        else:
+            margin = 0
+            
+        if(X[0] - margin < point.x() < X[1] + margin and 
+           Y[0] - margin < point.y() < Y[1] + margin):
+        
+            line_vector = np.array(self.line_to_vector(line_start_point, line_end_point))
+            
+            vector_to_projeted = np.array(self.line_to_vector(line_start_point, point))
+            
+            projected_vector = (np.dot(vector_to_projeted, line_vector) / np.dot(line_vector, line_vector))*line_vector
+            
+            return (vector_to_projeted - projected_vector)
+            
+    def add_point_to_all(self, point):
+        
+        vector = self.line_to_vector(self.polygon_list[self.indice_of_poly].at(self.indice_in_poly - 1), point)  
+        
+        for j in range(0,len(self.polygon_list) - 1):
+            
+           point = QtCore.QPointF(vector[0] + self.polygon_list[j].at(self.indice_in_poly - 1).x(),
+                                  vector[1] + self.polygon_list[j].at(self.indice_in_poly - 1).y())
+           
+           self.polygon_list[j].insert(self.indice_in_poly,point)
+           if (self.typeofPolygon == "+<class 'square.Square'>"):
+               point = QtCore.QPointF(vector[0] + self.polygon_list[j].at((self.indice_in_poly + (self.polygon_list[j].count() + 1)/2) % (self.polygon_list[j].count())).x(),
+                                      vector[1] + self.polygon_list[j].at((self.indice_in_poly + (self.polygon_list[j].count() + 1)/2) % (self.polygon_list[j].count())).y())
+               self.polygon_list[j].insert((self.indice_in_poly + (self.polygon_list[j].count() + 1)/2) % (self.polygon_list[j].count()),point)
+        
+
+    def modify_point_in_all(self, new_point):
+        
+        vector = self.line_to_vector(self.polygon_list[self.indice_of_poly].at(self.indice_in_poly - 1), new_point)  
+
+        for j in range(0,len(self.polygon_list) - 1):
+            
+            point = QtCore.QPointF(vector[0] + self.polygon_list[j].at(self.indice_in_poly - 1).x(),
+                                   vector[1] + self.polygon_list[j].at(self.indice_in_poly - 1).y())
+            
+            self.polygon_list[j].replace(self.indice_in_poly,point)
+            
+            if (self.typeofPolygon == "+<class 'square.Square'>"):
+                #C'est ici que ça bug l'indice est pas bon
+                point = QtCore.QPointF(vector[0] + self.polygon_list[j].at((self.indice_in_poly + (self.polygon_list[j].count() + 1)/2) % (self.polygon_list[j].count())).x(),
+                                       vector[1] + self.polygon_list[j].at((self.indice_in_poly + (self.polygon_list[j].count() + 1)/2) % (self.polygon_list[j].count())).y())
+                
+                self.polygon_list[j].replace((self.indice_in_poly + (self.polygon_list[j].count() + 1)/2) % (self.polygon_list[j].count()),point)
+            
+    def line_to_vector(self, line_start_point, line_end_point):
+        
+        return (line_end_point.x() - line_start_point.x(),
+                line_end_point.y() - line_start_point.y(),
+                )
     
+    def generate_coordinates(self):
+        
+        for poly in self.polygon_list:
+            
+                if (0 <= poly.at(0).y() <= self.polygon.size[1] + 1): 
+                    self.polygon_coordinate[int(poly.at(0).y())].append(poly)
+                    
+    def generate_non_modifiable_point(self):
+        
+        for poly in self.polygon_list:
+            for i in range(0,poly.count()):
+                self.fixed_points.append(poly.at(i))
+            
+                
+    def find_search_area(self, point):
+        
+        search_area = []
+        indice = -1
+        
+        while(0 <= int(point.y() + indice) <= self.polygon.size[1] + 1 and len(self.polygon_coordinate[int(point.y() + indice)]) == 0):
+            indice -= 1
+            
+        for i in range(0,len(self.polygon_coordinate[int(point.y() + indice)])):
+            search_area.append(self.polygon_coordinate[int(point.y() + indice)][i])
+                
+        indice = 0
+        
+        while(0 <= int(point.y() + indice) <= self.polygon.size[1] + 1 and len(self.polygon_coordinate[int(point.y() + indice)]) == 0):
+            indice += 1    
+            
+        for i in range(0,len(self.polygon_coordinate[int(point.y() + indice)])):
+            search_area.append(self.polygon_coordinate[int(point.y() + indice)][i])
+            
+        return search_area
+    
+    def get_corresponding_index(self, poly):
+        
+        for i in range(0,len(self.polygon_list)):
+            if (self.polygon_list[i] is poly):
+                return i
+        return None
+    
+    def vector_distance(self, vector):
+        return math.sqrt(vector[0]**2 + vector[1]**2)
+    
+    def can_move(self,point):
+    
+        if(self.fixed_points.count(point) != 0):
+                return False
+        return True
