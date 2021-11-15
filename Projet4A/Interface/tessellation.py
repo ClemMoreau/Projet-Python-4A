@@ -22,7 +22,8 @@ class Tessellation(QtWidgets.QWidget):
         self.numberPolygonPerColumn = round((self.numberPolygonPerLine*self.size[1])/self.size[0])
         print(self.numberPolygonPerColumn)
         
-        self.coordinateOfPolygon = [[None for j in range(size[1] + 1)] for i in range(size[0] + 1)]
+        self.coordinateOfPolygon = [[None for j in range(size[1] + 1)] for i in range(size[0] + 1)] #divide in coulumn
+        #self.coordinateOfPolygon = [[None for j in range(size[0] + 1)] for i in range(size[1] + 1)] #divide in lines
         self.typeofPolygon = typeofPolygon
         self.listOfPolygon = []        
         
@@ -105,7 +106,7 @@ class Tessellation(QtWidgets.QWidget):
                 if(0 <= int(polygon.at(0).x()) <= self.size[0] and 
                    0 <= int(polygon.at(0).y()) <= self.size[1]):
                     self.coordinateOfPolygon[int(polygon.at(0).x())][int(polygon.at(0).y())] = polygon
-                
+                    
             point = point_mem
                     
     def draw_hexagon(self):
@@ -132,7 +133,8 @@ class Tessellation(QtWidgets.QWidget):
         self.pStart = event.pos()
         print(self.pStart)
         
-        for j in range(0,len(self.listOfPolygon)):
+        """for j in range(0,len(self.listOfPolygon)):
+            
             for i in range (0,self.listOfPolygon[j].count()):
                     
                     #Remplacer par un truc qui vérifie juste si projection est dans le segment
@@ -157,8 +159,8 @@ class Tessellation(QtWidgets.QWidget):
                              self.indice = i + 1
                              self.poly = j
                              self.point_to_add = True           
-
-        """ for i in range(-1,2):
+            """
+        for i in range(-1,2):
             liste = self.coordinateOfPolygon[int(event.pos().x())+i]
             print(liste)
             for poly in liste:
@@ -189,4 +191,4 @@ class Tessellation(QtWidgets.QWidget):
                 
                     
         #LE PASSEZ DANS UNE METHODE 'EST SUR SEGMENT POLYGONE' ?
-        """
+    
