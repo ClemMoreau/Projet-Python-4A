@@ -1,16 +1,11 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Oct 14 17:22:13 2021
-
-@author: cleme
-"""
-import numpy as np, math
+import numpy as np, math, saver as save, loader as load
 from PyQt5 import QtWidgets, QtGui, QtCore, Qt
 
+#déplacer à l'intérieur de la classe?
 MARGIN_ALLOWED = 2
 
 class Tessellation(QtWidgets.QWidget):
-    
+    """VOIR POUR BOUGER LA CREATION POLYGON (OBJ) ICI"""
     def __init__(self, polygon):
         super().__init__()
         
@@ -20,35 +15,32 @@ class Tessellation(QtWidgets.QWidget):
         
         self.polygon_list = self.polygon.generate_poly()    
         
+        
         self.polygon_coordinate = [[] for i in range(polygon.size[1] + 1)]
         self.generate_coordinates()
         
-        #faire une liste propre
         self.fixed_points = []
         self.generate_non_modifiable_point()
             
         self.point_to_move = False
-       
-    #evenement QPaintEvent
-    def paintEvent(self, event):   # event de type QPaintEvent
-        # recupere le QPainter du widget
-        painter = QtGui.QPainter(self)
         
-        """painter.setBrush(Qt.QColor("yellow"))
-        background = QtGui.QPolygon()
-        background << QtCore.QPoint(0,0)
-        background << QtCore.QPoint(self.polygon.size[0],0)
-        background << QtCore.QPoint(self.polygon.size[0],self.polygon.size[1])
-        background << QtCore.QPoint(0,self.polygon.size[1])
-        painter.drawPolygon(background)"""
+        self.setMouseTracking(True)
+        self.set_graphic_interface()
+
+#==============================================================================    
+#   METHODS
+#==============================================================================
+    
+
+
+    def paintEvent(self, event):
+        
+        painter = QtGui.QPainter(self)
         
         painter.setBrush(Qt.QColor("cyan"))
         for poly in self.polygon_list:
             painter.drawPolygon(poly)
-    
-        
-    """DEBUT DE DEFORMATION NE MARCHE BIEN QU'AVEC LES TRIANGLES
-    AVEC LES CARRES çA MARCHE MAIS POUR 1 TRAIT SUR 2 ET C'EST NORMAL VU QU'ON DESSIN LA MOITIE DES CARRES"""    
+       
     def mouseReleaseEvent(self, event): # evenement mouseRelease
         if(self.point_to_move):  
            self.update()
@@ -56,22 +48,26 @@ class Tessellation(QtWidgets.QWidget):
                
         
     def mouseMoveEvent(self, event):
-            if(self.point_to_move): 
-                self.modify_point_in_all(event.pos())
-                self.update()
+       
+        if(not self.cursor_near_point(event.pos())):
+            QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        
+        if(self.point_to_move): 
+            self.modify_point_in_all(event.pos())
+        self.update()
        
     def mousePressEvent(self, event): # evenement mousePress
         self.last_point_added = event.pos()
-        
         search_area = self.find_search_area(event.pos())
         
         for j in range(0,len(search_area)):
             for i in range (0,search_area[j].count()):
                 
-                distance = self.vector_distance(self.line_to_vector(search_area[j].at(i % search_area[j].count()), event.pos()))
+                distance = self.vector_length(self.line_to_vector(search_area[j].at(i % search_area[j].count()), event.pos()))
                 
-                if distance < 10 :
-                    if self.can_move(search_area[j].at(i % search_area[j].count())):
+                if(distance < 10):
+                    
+                    if(self.can_move(search_area[j].at(i % search_area[j].count()))):
                     
                         self.indice_in_poly = i
                         self.indice_of_poly = self.get_corresponding_index(search_area[j])
@@ -97,7 +93,7 @@ class Tessellation(QtWidgets.QWidget):
                             self.indice_of_poly = self.get_corresponding_index(search_area[j])
                             if(self.indice_of_poly != None):
                                 
-                                self.point_to_move = True    
+                                self.point_to_move = True 
                                 self.add_point_to_all(event.pos())
                             
                             return
@@ -112,7 +108,7 @@ class Tessellation(QtWidgets.QWidget):
              max(line_end_point.y(), line_start_point.y()))
         
         if (X[0] == X[1] or Y[0] == Y[1]):
-            margin = 7
+            margin = 5
         else:
             margin = 0
             
@@ -133,10 +129,11 @@ class Tessellation(QtWidgets.QWidget):
         
         for j in range(0,len(self.polygon_list) - 1):
             
-           point = QtCore.QPointF(vector[0] + self.polygon_list[j].at(self.indice_in_poly - 1).x(),
+           point = QtCore.QPoint(vector[0] + self.polygon_list[j].at(self.indice_in_poly - 1).x(),
                                   vector[1] + self.polygon_list[j].at(self.indice_in_poly - 1).y())
            
            self.polygon_list[j].insert(self.indice_in_poly,point)
+           
            if (self.typeofPolygon == "+<class 'square.Square'>"):
                point = QtCore.QPointF(vector[0] + self.polygon_list[j].at((self.indice_in_poly + (self.polygon_list[j].count() + 1)/2) % (self.polygon_list[j].count())).x(),
                                       vector[1] + self.polygon_list[j].at((self.indice_in_poly + (self.polygon_list[j].count() + 1)/2) % (self.polygon_list[j].count())).y())
@@ -149,7 +146,7 @@ class Tessellation(QtWidgets.QWidget):
 
         for j in range(0,len(self.polygon_list) - 1):
             
-            point = QtCore.QPointF(vector[0] + self.polygon_list[j].at(self.indice_in_poly - 1).x(),
+            point = QtCore.QPoint(vector[0] + self.polygon_list[j].at(self.indice_in_poly - 1).x(),
                                    vector[1] + self.polygon_list[j].at(self.indice_in_poly - 1).y())
             
             self.polygon_list[j].replace(self.indice_in_poly,point)
@@ -170,9 +167,9 @@ class Tessellation(QtWidgets.QWidget):
     def generate_coordinates(self):
         
         for poly in self.polygon_list:
-            
-                if (0 <= poly.at(0).y() <= self.polygon.size[1] + 1): 
-                    self.polygon_coordinate[int(poly.at(0).y())].append(poly)
+            for j in range(poly.count()):
+                if (0 <= poly.at(j).y() <= self.polygon.size[1] + 1): 
+                    self.polygon_coordinate[int(poly.at(j).y())].append(poly)
                     
     def generate_non_modifiable_point(self):
         
@@ -180,13 +177,13 @@ class Tessellation(QtWidgets.QWidget):
             for i in range(0,poly.count()):
                 self.fixed_points.append(poly.at(i))
             
-                
+        #a modifier pour prendre plus de ligne si pas dans la zone
     def find_search_area(self, point):
         
         search_area = []
         indice = -1
         
-        while(0 <= int(point.y() + indice) <= self.polygon.size[1] + 1 and len(self.polygon_coordinate[int(point.y() + indice)]) == 0):
+        while(0 <= int(point.y() + indice) < len (self.polygon_coordinate) and len(self.polygon_coordinate[int(point.y() + indice)]) == 0):
             indice -= 1
             
         for i in range(0,len(self.polygon_coordinate[int(point.y() + indice)])):
@@ -194,11 +191,13 @@ class Tessellation(QtWidgets.QWidget):
                 
         indice = 0
         
-        while(0 <= int(point.y() + indice) <= self.polygon.size[1] + 1 and len(self.polygon_coordinate[int(point.y() + indice)]) == 0):
+        while(0 <= int(point.y() + indice) < len(self.polygon_coordinate) and 
+              len(self.polygon_coordinate[int(point.y() + indice)]) == 0):
             indice += 1    
             
-        for i in range(0,len(self.polygon_coordinate[int(point.y() + indice)])):
-            search_area.append(self.polygon_coordinate[int(point.y() + indice)][i])
+        if(0 <= int(point.y() + indice) < len(self.polygon_coordinate)):
+            for i in range(0,len(self.polygon_coordinate[int(point.y() + indice)])):
+                search_area.append(self.polygon_coordinate[int(point.y() + indice)][i])
             
         return search_area
     
@@ -209,7 +208,7 @@ class Tessellation(QtWidgets.QWidget):
                 return i
         return None
     
-    def vector_distance(self, vector):
+    def vector_length(self, vector):
         return math.sqrt(vector[0]**2 + vector[1]**2)
     
     def can_move(self,point):
@@ -217,3 +216,45 @@ class Tessellation(QtWidgets.QWidget):
         if(self.fixed_points.count(point) != 0):
                 return False
         return True
+    
+    def cursor_near_point(self, point):
+        
+        search_area = self.find_search_area(point)
+        
+        for j in range(0,len(search_area)):
+            for i in range (0,search_area[j].count()):
+                
+                distance = self.vector_length(self.line_to_vector(search_area[j].at(i % search_area[j].count()), point))
+
+                if distance < 10 :
+                    QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+                    if(not self.can_move(search_area[j].at(i % search_area[j].count()))):
+                       QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.ForbiddenCursor))
+                    return True
+        return False
+    
+    def set_graphic_interface(self):
+        
+        self.menu = QtWidgets.QMenuBar(self)
+        self.menu.addSeparator()
+        self.save = self.menu.addAction('Save')
+        self.save.triggered.connect(self.save_tesselation)
+        self.load = self.menu.addAction('Load')
+        self.load.triggered.connect(self.load_tesselation)
+        
+    def save_tesselation(self):
+        
+        saving = save.Saver(self.polygon_list, 'C:/Users/cleme/OneDrive/Bureau/testPython.txt')
+        saving.save_object()
+        
+    def load_tesselation(self):
+        
+        loading = load.Loader('C:/Users/cleme/OneDrive/Bureau/testPython.txt')
+        loading.load_object()    
+        
+        self.polygon_list.clear()        
+        self.polygon_list = loading.get_object_loaded()
+        self.generate_non_modifiable_point()
+        self.generate_coordinates()
+        self.update()                          
+       
