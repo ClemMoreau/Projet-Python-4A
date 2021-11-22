@@ -11,12 +11,6 @@ class settings(object):
     def __init__(self, size):
         #The setting widget
         self.set_graphic_interface()
-        
-        #windows used to call the next widget
-        self.main_window = QtWidgets.QMainWindow()
-        self.main_window.setCentralWidget(self.widget)
-        self.main_window.resize(260,250)
-        self.main_window.show()
 
         #Size for the calcul of polygon length
         self.widget_max_size = size
@@ -34,6 +28,12 @@ class settings(object):
     def get_widget_max_size(self):
         return self.widget_max_size
 
+    def get_combo_box_polygon_type(self):
+        return self.combo_box_polygon_type
+    
+    def get_spin_box_number_poly_per_line(self):
+        return self.spin_box_number_poly_per_line
+    
 #==============================================================================    
 #   SETTERS
 #==============================================================================
@@ -49,7 +49,14 @@ class settings(object):
     def set_widget_max_size(self, size):
         if(size >= 0):
             self.widget_max_size = size
-        
+            
+    def set_combo_box_polygon_type(self, combo_box):
+        if(combo_box):
+            self.combo_box_polygon_type = combo_box
+
+    def set_spin_box_number_poly_per_line(self, spin_box):
+        if(spin_box):
+            self.spin_box_number_poly_per_line = spin_box
 #==============================================================================    
 #   METHODS
 #==============================================================================
@@ -93,7 +100,13 @@ class settings(object):
         push_button_draw.setText("Draw !")
         push_button_draw.clicked.connect(self.button_click_action)
         
-    def button_click_action(self):       
+        #main window of the application
+        self.main_window = QtWidgets.QMainWindow()
+        self.main_window.setCentralWidget(self.widget)
+        self.main_window.resize(260,250)
+        self.main_window.show()
+        
+    def button_click_action(self): 
         
         polygon_type =  self.combo_box_polygon_type.currentText()       
         nb_polygon_per_line = self.spin_box_number_poly_per_line.value()
@@ -111,3 +124,4 @@ class settings(object):
         
         self.main_window.setCentralWidget(tessellation)
         self.main_window.showMaximized()
+        
