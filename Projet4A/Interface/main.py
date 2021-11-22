@@ -7,7 +7,7 @@ class Main:
         #launch the application
         mainApp = QtWidgets.QApplication(sys.argv)
         
-        #get the screen size used for the lenght of drawn polygons 
+        #get the screen size used for the length of drawn polygons 
         maxScreenSize = (mainApp.primaryScreen().size().width(),
                          mainApp.primaryScreen().size().height())
         
