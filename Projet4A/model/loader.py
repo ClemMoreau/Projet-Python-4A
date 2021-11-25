@@ -1,6 +1,7 @@
 import pickle
 from PyQt5 import QtWidgets, QtCore
 
+
 class Loader():
     
 #==============================================================================    

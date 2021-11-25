@@ -1,25 +1,21 @@
-import tessellation as tess, square as sq, triangle as tri, hexagon as hexa
+from controller.tessellation import Tessellation
+from model import square as sq, triangle as tri, hexagon as hexa
 from PyQt5 import QtWidgets, QtCore
+from view import saveWindow as save, loadWindow as load
+from view.tessellationWindow import TessellationWindow
+from view.settingsWindow import SettingsWindow
 
-class settings(object):
+class Settings(object):
     
 #==============================================================================    
 #   CONSTRUCTOR
 #============================================================================== 
     
     #Changer size (tuple) en deux int ?
-    def __init__(self, size):
+    def __init__(self):
+
         #The setting widget
         self.set_graphic_interface()
-        
-        #windows used to call the next widget
-        self.main_window = QtWidgets.QMainWindow()
-        self.main_window.setCentralWidget(self.widget)
-        self.main_window.resize(260,250)
-        self.main_window.show()
-
-        #Size for the calcul of polygon length
-        self.widget_max_size = size
         
 #==============================================================================    
 #   GETTERS
@@ -30,10 +26,13 @@ class settings(object):
     
     def get_mainWindow(self):
         return self.main_window
-    
-    def get_widget_max_size(self):
-        return self.widget_max_size
 
+    def get_combo_box_polygon_type(self):
+        return self.combo_box_polygon_type
+    
+    def get_spin_box_number_poly_per_line(self):
+        return self.spin_box_number_poly_per_line
+    
 #==============================================================================    
 #   SETTERS
 #==============================================================================
@@ -45,11 +44,14 @@ class settings(object):
     def set_mainWindow(self, window):
         if(window):
             self.main_window = window
-        
-    def set_widget_max_size(self, size):
-        if(size >= 0):
-            self.widget_max_size = size
-        
+            
+    def set_combo_box_polygon_type(self, combo_box):
+        if(combo_box):
+            self.combo_box_polygon_type = combo_box
+
+    def set_spin_box_number_poly_per_line(self, spin_box):
+        if(spin_box):
+            self.spin_box_number_poly_per_line = spin_box
 #==============================================================================    
 #   METHODS
 #==============================================================================
@@ -93,21 +95,31 @@ class settings(object):
         push_button_draw.setText("Draw !")
         push_button_draw.clicked.connect(self.button_click_action)
         
-    def button_click_action(self):       
+            
+        SettingsWindow.settings_window.setCentralWidget(self.widget)
+        SettingsWindow.settings_window.resize(260,250)
+        SettingsWindow.settings_window.show()
+    
+        
+        
+    def button_click_action(self): 
         
         polygon_type =  self.combo_box_polygon_type.currentText()       
         nb_polygon_per_line = self.spin_box_number_poly_per_line.value()
         
         if (polygon_type == "Square"):
-            polygon = sq.Square(self.get_widget_max_size(), nb_polygon_per_line)
+            polygon = sq.Square(SettingsWindow.maxScreenSize, nb_polygon_per_line)
             
         elif (polygon_type == "Triangle"):
-            polygon = tri.Triangle(self.get_widget_max_size(), nb_polygon_per_line)
+            polygon = tri.Triangle(SettingsWindow.maxScreenSize, nb_polygon_per_line)
         elif (polygon_type == "Hexagon"):
             print("Not finished yet")
-            polygon = hexa.Hexagon(self.get_widget_max_size(), nb_polygon_per_line)
-            
-        tessellation = tess.Tessellation(polygon)
+            polygon = hexa.Hexagon(SettingsWindow.maxScreenSize, nb_polygon_per_line)
+       
         
-        self.main_window.setCentralWidget(tessellation)
-        self.main_window.showMaximized()
+        TessellationWindow.tessellation = Tessellation(polygon)
+        TessellationWindow.tessellation_window.setCentralWidget(TessellationWindow.tessellation)
+        self.tru = save.SaveWindow(TessellationWindow.tessellation.polygon_list)
+        self.load = load.LoadWindow(TessellationWindow.tessellation)
+        TessellationWindow.tessellation_window.showMaximized()
+        

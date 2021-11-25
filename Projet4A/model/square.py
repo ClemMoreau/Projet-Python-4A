@@ -1,4 +1,4 @@
-import polygon as poly
+import model.polygon as poly
 from PyQt5 import QtGui, QtCore
 
 class Square(poly.Polygon):
@@ -9,7 +9,22 @@ class Square(poly.Polygon):
     def __init__(self, size , nb_poly_per_line):
         
         super().__init__(size, nb_poly_per_line)
-        
+        self.nb_poly_per_column = round((size[1]//self.length))
+#==============================================================================    
+#   GETTERS
+#==============================================================================
+
+    def get_nb_poly_per_column(self):
+        return self.nb_poly_per_column 
+    
+#==============================================================================    
+#   SETTERS
+#==============================================================================
+
+    def set_nb_poly_per_column(self, nb):
+        if(nb > 0):
+            self.nb_poly_per_column = nb
+               
 #==============================================================================    
 #   METHODS
 #==============================================================================
@@ -29,25 +44,22 @@ class Square(poly.Polygon):
                 
                 if(paint):
                     #new polygon in the tessellation
-                    polygon = QtGui.QPolygonF()
+                    polygon = QtGui.QPolygon()
                     
                     abscissa = (j * self.length)
                     ordinate = (i * self.length)
                     
                     #Top-Left point
-                    polygon << QtCore.QPointF(abscissa, ordinate)
+                    polygon << QtCore.QPoint(abscissa, ordinate)
                     #Top-Right point
-                    polygon << QtCore.QPointF(self.length + abscissa, ordinate)
+                    polygon << QtCore.QPoint(self.length + abscissa, ordinate)
                     #Bot-right point
-                    polygon << QtCore.QPointF(self.length + abscissa, self.length + ordinate)
+                    polygon << QtCore.QPoint(self.length + abscissa, self.length + ordinate)
                     #Bot-left point
-                    polygon << QtCore.QPointF(abscissa, self.length + ordinate)
+                    polygon << QtCore.QPoint(abscissa, self.length + ordinate)
                     
                     polygon_list.append(polygon)
-                    #pour éviter de dépasser de la liste, de toute façon on ne peux cliquer que sur l'écran
-                    """if(0 <= int(polygon.at(0).x()) <= self.size[0] and 
-                       0 <= int(polygon.at(0).y()) <= self.size[1]):
-                        self.coordinateOfPolygon[int(polygon.at(0).x())][int(polygon.at(0).y())] = polygon"""
+                    
                     
                 paint = not paint
         return polygon_list

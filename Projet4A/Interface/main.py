@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets
-import settings, sys
+import view.settings, sys
 
 class Main:
     
@@ -12,7 +12,7 @@ class Main:
                          mainApp.primaryScreen().size().height())
         
         #call the first widget on the windows : settings
-        settingWidget = settings.settings(maxScreenSize)
+        settingWidget = view.settings.Settings(maxScreenSize)
         
         #used to kill everything
         sys.exit(mainApp.exec_())
