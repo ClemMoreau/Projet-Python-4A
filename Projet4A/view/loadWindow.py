@@ -1,13 +1,12 @@
 from PyQt5 import QtWidgets, QtCore
-from model import loader
+from model.loader import Loader
+from view.tessellationWindow import TessellationWindow
 
 class LoadWindow():
     
-    def __init__(self, object_to_save):
+    def __init__(self):
         
         self.window = QtWidgets.QMainWindow()
-        
-        self.object_to_save = object_to_save
         
         self.set_graphic_interface()
         
@@ -42,7 +41,10 @@ class LoadWindow():
     def save(self):
         
         if(self.line_edit_filename.text() != ''):
-            loader.Loader(self.line_edit_filename.text())
+            loader = Loader(self.line_edit_filename.text());
+            loader.load_object()
+            if (loader.get_object_loaded()):
+                TessellationWindow.tessellation.polygon_information.polygon_list = loader.get_object_loaded() 
         else:
             #Text label filename of the saved tesselation
             label_filename = QtWidgets.QLabel(self.widget)

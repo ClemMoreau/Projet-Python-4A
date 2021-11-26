@@ -17,7 +17,7 @@ class Tessellation(QtWidgets.QWidget):
         super().__init__()
         
         if (polygon_type == "Square"):
-            polygon = Square(SettingsWindow.max_screen_size, nb_polygon_per_line)
+            polygon = Square((100,100), nb_polygon_per_line)
         elif (polygon_type == "Triangle"):
             polygon = Triangle(SettingsWindow.max_screen_size, nb_polygon_per_line)
         elif (polygon_type == "Hexagon"):
@@ -262,3 +262,9 @@ class Tessellation(QtWidgets.QWidget):
         self.polygon_information.generate_coordinates()
         self.update()                          
        
+import sys
+app = QtWidgets.QApplication(sys.argv)
+m = QtWidgets.QMainWindow()
+m.setCentralWidget(Tessellation("Square",1))
+m.show()
+sys.exit(app.exec_())

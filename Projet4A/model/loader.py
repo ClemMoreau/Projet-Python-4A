@@ -14,6 +14,8 @@ class Loader():
         
         self.file_name = file_name
         
+        self.object_loaded = None
+        
         self.set_graphic_interface()
         
 #==============================================================================    

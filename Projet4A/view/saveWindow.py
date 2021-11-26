@@ -1,13 +1,12 @@
 from PyQt5 import QtWidgets, QtCore
 from model import saver
+from view.tessellationWindow import TessellationWindow
 
 class SaveWindow():
     
-    def __init__(self, object_to_save):
+    def __init__(self):
         
         self.window = QtWidgets.QMainWindow()
-        
-        self.object_to_save = object_to_save
         
         self.set_graphic_interface()
         
@@ -42,7 +41,7 @@ class SaveWindow():
     def save(self):
         
         if(self.line_edit_filename.text() != ''):
-            saver.Saver(self.object_to_save, self.line_edit_filename.text()).save_object()
+            saver.Saver(TessellationWindow.tessellation.polygon_information.get_polygon_list(), self.line_edit_filename.text()).save_object()
         else:
             #Text label filename of the saved tesselation
             label_filename = QtWidgets.QLabel(self.widget)
