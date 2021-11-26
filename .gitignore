@@ -1,3 +1,9 @@
 Projet4A/.spyproject/*
 Projet4A/Interface/*__pycache__/*
 Projet4A/Interface/__init__.py
+Projet4A/controller/*__pycache__/*
+Projet4A/controller/__init__.py
+Projet4A/model/*__pycache__/*
+Projet4A/model/__init__.py
+Projet4A/view/*__pycache__/*
+Projet4A/view/__init__.py
