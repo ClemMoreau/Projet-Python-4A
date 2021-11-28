@@ -1,23 +1,24 @@
-import model.polygon as poly, math
+from model.polygon import Polygon
 from PyQt5 import QtGui, QtCore
+import math
 
 TRIANGLE_CONST = math.sqrt(3)/2
 HEXAGON_CONST = math.sqrt(3)
 
-class Hexagon(poly.Polygon):
+class Hexagon(Polygon):
     
-#==============================================================================    
-#   CONSTRUCTOR
-#==============================================================================
+    #==========================================================================
+    #   CONSTRUCTOR
+    #==========================================================================
     def __init__(self, size , nb_poly_per_line):
         
         super().__init__(size, nb_poly_per_line)
         
         self.nb_poly_per_column = round((size[1]//self.length))
         
-#==============================================================================    
-#   METHODS
-#==============================================================================
+    #==============================================================================
+    #   METHODS
+    #==============================================================================
         
     def generate_poly(self):
             

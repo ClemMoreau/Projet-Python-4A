@@ -1,11 +1,18 @@
 from controller.tessellation import Tessellation
-from model import square as sq, triangle as tri, hexagon as hexa
-from model.saver import Saver
-from PyQt5 import QtWidgets, QtCore
+from controller.saveController import SaveController
+
 from view.saveWindow import SaveWindow
-from view.loadWindow import LoadWindow
 from view.tessellationWindow import TessellationWindow
 from view.settingsWindow import SettingsWindow
+from view.loadWindow import LoadWindow
+
+from PyQt5 import QtWidgets, QtCore
+
+COLOR_ALLOWED = ["white", "red", "green", "blue",
+                 "black", "darkRed", "drakGreen", "darkBlue",
+                 "cyan", "magenta", "yellow", "gray",
+                 "darkCyan", "drakMagenta", "darkYellow", "darkGray", "lidhtGray"]
+POLYGON_TYPE = ["Triangle", "Square", "Hexagon"]
 
 
 class Settings(QtWidgets.QWidget):
@@ -47,9 +54,8 @@ class Settings(QtWidgets.QWidget):
 
     def set_graphic_interface(self):
 
-        # To set same size with the window
-        self.resize(260, 250)
-
+        self.setFixedSize(QtCore.QSize(260,250))
+        self.setWindowTitle("Settings")
         # Text label TypeOfPoly
         label_polygon_type = QtWidgets.QLabel(self)
         label_polygon_type.setGeometry(QtCore.QRect(40, 20, 200, 20))
@@ -59,10 +65,8 @@ class Settings(QtWidgets.QWidget):
         # Combo Box containing TypeOfPoly
         self.combo_box_polygon_type = QtWidgets.QComboBox(self)
         self.combo_box_polygon_type.setGeometry(QtCore.QRect(50, 40, 161, 22))
-        self.combo_box_polygon_type.setObjectName("comboBox")
-        self.combo_box_polygon_type.addItem("Triangle")
-        self.combo_box_polygon_type.addItem("Square")
-        self.combo_box_polygon_type.addItem("Hexagon")
+        self.combo_box_polygon_type.setObjectName("combo_box_polygon_type")
+        self.combo_box_polygon_type.addItems(POLYGON_TYPE)
 
         # Spin box to select number of polygon per line [5;+∞[
         self.spin_box_number_poly_per_line = QtWidgets.QSpinBox(self)
@@ -70,6 +74,11 @@ class Settings(QtWidgets.QWidget):
                                                                     42, 22))
         self.spin_box_number_poly_per_line.setMinimum(5)
         self.spin_box_number_poly_per_line.setObjectName("spin_box_number_poly_per_line")
+        
+        self.combo_box_color = QtWidgets.QComboBox(self)
+        self.combo_box_color.setGeometry(QtCore.QRect(50, 115, 161, 22))
+        self.combo_box_color.setObjectName("combo_box_color")
+        self.combo_box_color.addItems(COLOR_ALLOWED)
 
         # Text label to chose number of polygon per line
         label_polygon_per_line = QtWidgets.QLabel(self)
@@ -84,18 +93,23 @@ class Settings(QtWidgets.QWidget):
         push_button_draw.setText("Draw !")
         push_button_draw.clicked.connect(self.button_click_action)
 
-        SettingsWindow.settings_window.setCentralWidget(self)
-        SettingsWindow.settings_window.resize(260, 250)
-        SettingsWindow.settings_window.show()
-
     def button_click_action(self):
 
         polygon_type = self.combo_box_polygon_type.currentText() 
         nb_polygon_per_line = self.spin_box_number_poly_per_line.value()
-
-        TessellationWindow.tessellation = Tessellation(polygon_type, nb_polygon_per_line)
-        TessellationWindow.tessellation_window.setCentralWidget(TessellationWindow.tessellation)
-
-        self.save_window = SaveWindow()
-        self.load_window = LoadWindow()
-        TessellationWindow.tessellation_window.showMaximized()
+        color = self.combo_box_color.currentText()
+        
+        SettingsWindow.close_widget()
+        
+        TessellationWindow.set_tessellation_widget(Tessellation(polygon_type, nb_polygon_per_line, color))
+        TessellationWindow.show_widget()
+        
+        SaveWindow.set_save_widget(SaveController())
+        SaveWindow.save_widget.show()
+        
+        LoadWindow.close_widget()
+        LoadWindow.show_widget()
+        
+    def closeEvent(self, event):
+        pass
+        #LoadWindow.load_widget.close()

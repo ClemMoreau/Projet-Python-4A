@@ -1,10 +1,11 @@
-import model.polygon as poly, math
+from model.polygon import Polygon
 from PyQt5 import QtGui, QtCore
+import math
 
 #déplacer à l'intérieur de la classe?
 TRIANGLE_CONST = math.sqrt(3)/2
 
-class Triangle(poly.Polygon):
+class Triangle(Polygon):
     
 #==============================================================================    
 #   CONSTRUCTOR
@@ -12,6 +13,7 @@ class Triangle(poly.Polygon):
     def __init__(self, size , nb_poly_per_line):
         
         super().__init__(size, nb_poly_per_line)
+        
         self.nb_poly_per_column = round((size[1]//(self.length * TRIANGLE_CONST)))
 
 #==============================================================================    

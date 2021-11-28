@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtGui, QtCore
+
 
 class Polygon:
 
@@ -6,14 +6,13 @@ class Polygon:
 #   CONSTRUCTOR
 #==============================================================================
     def __init__(self, size , nb_poly_per_line):
-        
-        
+
         self.size = size
-        
+
         self.nb_poly_per_line = nb_poly_per_line
-        
+
         self.length = self.size[0]/self.nb_poly_per_line
-    
+
 #==============================================================================    
 #   GETTERS
 #==============================================================================
@@ -26,27 +25,28 @@ class Polygon:
 
     def get_nb_poly_per_line(self):
         return self.nb_poly_per_line
-    
-    
+
 #==============================================================================    
 #   SETTERS
 #==============================================================================
-
+    def set_size(self, size):
+        if(size[0] >= 0 and size[1] >= 0):
+            self.size = size
+            self.length = self.size[0]/self.nb_poly_per_line
+            
     def set_length(self, length):
         if(length >= 0):
             self.length = length
-    
+            self.nb_poly_per_line = self.size[0]//self.length
+
     def set_nb_poly_per_line(self, nb):
         if(nb > 0):
             self.nb_poly_per_line = nb
-            
-    def set_nb_poly_per_column(self, nb):
-        if(nb > 0):
-            self.nb_poly_per_column = nb
-        
+            self.length = self.size[0]/self.nb_poly_per_line
+
 #==============================================================================    
 #   METHODS
 #==============================================================================
-        
+
     def generate_poly(self):
         pass
