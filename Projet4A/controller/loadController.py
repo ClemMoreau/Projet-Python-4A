@@ -2,6 +2,7 @@ from PyQt5 import QtWidgets, QtCore
 from model.loader import Loader
 from view.tessellationWindow import TessellationWindow
 from view.settingsWindow import SettingsWindow
+from controller.tessellation import Tessellation
 
 import os
 
@@ -49,8 +50,23 @@ class LoadController(QtWidgets.QWidget):
         
     def load(self):
         try:
-            
-            if(TessellationWindow.get_tessellation_widget().get_polygon_information()):
+            if(TessellationWindow.get_tessellation_widget()):
+                loader = Loader(self.combo_box_file_to_load.currentText(), 'saves/polygon list/');
+                loader.load_object()  
+                if (loader.get_object_loaded()):
+                    TessellationWindow.get_tessellation_widget().get_polygon_information().set_polygon_list(loader.get_object_loaded())
+
+                loader = Loader(self.combo_box_file_to_load.currentText(), 'saves/fixed points/');
+                loader.load_object()  
+                if (loader.get_object_loaded()):
+                    TessellationWindow.get_tessellation_widget().get_polygon_information().set_fixed_points(loader.get_object_loaded())
+                 
+                TessellationWindow.get_tessellation_widget().get_polygon_information().generate_coordinates()
+                TessellationWindow.get_tessellation_widget().update()
+                
+            else:
+                
+                TessellationWindow.set_tessellation_widget(Tessellation('Square', 1, SettingsWindow.get_setting_widget().get_combo_box_color().currentText()))
                 
                 loader = Loader(self.combo_box_file_to_load.currentText(), 'saves/polygon list/');
                 loader.load_object()  
@@ -64,9 +80,10 @@ class LoadController(QtWidgets.QWidget):
                  
                 TessellationWindow.get_tessellation_widget().get_polygon_information().generate_coordinates()
                 TessellationWindow.get_tessellation_widget().update()
-                self.load_label.setText("File loaded !")
-            else:
-                pass
+                
+                TessellationWindow.show_widget()
+                
+            self.load_label.setText("File loaded !")
                 
         except:
             

@@ -1,6 +1,8 @@
 from model.polygonInformation import PolygonInformation
 from model.vector import Vector
 
+from controller.saveController import SaveController
+
 from view.saveWindow import SaveWindow
 from view.loadWindow import LoadWindow
 
@@ -33,6 +35,9 @@ class Tessellation(QtWidgets.QWidget):
             self.color = color
         
         self.setMouseTracking(True)
+        
+        SaveWindow.set_save_widget(SaveController())
+        SaveWindow.save_widget.show()
     
     #==========================================================================
     #   GETTERS

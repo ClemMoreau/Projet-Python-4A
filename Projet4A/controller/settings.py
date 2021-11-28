@@ -1,7 +1,5 @@
 from controller.tessellation import Tessellation
-from controller.saveController import SaveController
 
-from view.saveWindow import SaveWindow
 from view.tessellationWindow import TessellationWindow
 from view.settingsWindow import SettingsWindow
 from view.loadWindow import LoadWindow
@@ -32,6 +30,9 @@ class Settings(QtWidgets.QWidget):
 
     def get_combo_box_polygon_type(self):
         return self.combo_box_polygon_type
+    
+    def get_combo_box_color(self):
+        return self.combo_box_color
 
     def get_spin_box_number_poly_per_line(self):
         return self.spin_box_number_poly_per_line
@@ -103,9 +104,6 @@ class Settings(QtWidgets.QWidget):
         
         TessellationWindow.set_tessellation_widget(Tessellation(polygon_type, nb_polygon_per_line, color))
         TessellationWindow.show_widget()
-        
-        SaveWindow.set_save_widget(SaveController())
-        SaveWindow.save_widget.show()
         
         LoadWindow.close_widget()
         LoadWindow.show_widget()
