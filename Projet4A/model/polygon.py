@@ -1,12 +1,29 @@
 
 
 class Polygon:
-
+    """
+    Class which initialize parameter for 
+    the square, triangle, hexagon classes
+    
+    Methods
+    ---------------
+    
+    generate_poly()
+        
+    """
 #==============================================================================    
 #   CONSTRUCTOR
 #==============================================================================
     def __init__(self, size , nb_poly_per_line):
-
+        """
+        Parameters
+        ---------------
+        size : int 
+            the height of the screen
+            
+        nb_poly_per_line : int 
+            number of polygon per line (default is 5)
+        """
         self.size = size
 
         self.nb_poly_per_line = nb_poly_per_line

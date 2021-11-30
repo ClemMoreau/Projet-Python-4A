@@ -3,13 +3,33 @@ from PyQt5 import QtWidgets, QtCore
 
 
 class Loader():
+    """
+    Class which take a saved file 
+    and reuse the data inside of it
     
+    Methods 
+    ---------------
+    
+    load_object()
+         method which open a saved file
+         and read the binary data inside
+    
+    """
 #==============================================================================    
 #   CONSTRUCTOR
 #==============================================================================
  
     def __init__(self, file_name, path = None):
+        """
+        Parameters
+        ---------------
         
+        file_name : str
+            name of the file (.txt)
+        path : str
+            path to the place where the file is saved
+            
+        """
         self.path = path
         
         self.file_name = file_name
@@ -52,7 +72,11 @@ class Loader():
 #==============================================================================
           
     def load_object(self):
-        
+        """
+        method which open a saved file
+        and read the binary data inside
+
+        """
         file = open(self.path + self.file_name,"rb")
         
         self.object_loaded = pickle.load(file)

@@ -1,8 +1,9 @@
+from controller.settings import Settings
+from controller.loadController import LoadController
+
 from view.settingsWindow import SettingsWindow
 from view.loadWindow import LoadWindow
 
-from controller.settings import Settings
-from controller.loadController import LoadController
 
 from PyQt5 import QtWidgets
 import sys

@@ -6,7 +6,7 @@ from view.settingsWindow import SettingsWindow
 
 
 class PolygonInformation(object):
-
+    
     #==========================================================================
     #   CONSTRUCTOR
     #==========================================================================

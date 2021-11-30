@@ -2,13 +2,37 @@ import pickle
 from PyQt5 import QtWidgets
 
 class Saver(QtWidgets.QWidget):
+    """
+    Class which aim to save the deformation
+    apllied to the figure
     
+    Methods
+    ---------------
+    
+    clear_file()
+        method which create an empty file if 
+        it doesnt exist
+    save_object()
+        save the object into a file
+        the object is converted into binary data
+    """
 #==============================================================================    
 #   CONSTRUCTOR
 #==============================================================================
  
     def __init__(self, object_to_save, file_name, path = None):
+        """
+        Parameters
+        ---------------
         
+        object_to_save : object
+            the object that the user want to save
+        file_name : str
+            name of the file (.txt)
+        path : str
+            path to the place where the file is saved
+            
+        """
         super().__init__()
         
         self.path = path
@@ -55,7 +79,10 @@ class Saver(QtWidgets.QWidget):
 #==============================================================================
 
     def clear_file(self):
-        
+        """
+        Method which create an empty file if 
+        it doesnt exist
+        """
         file = open(self.path + self.file_name + '.txt','w')
         file.close()
         
@@ -64,7 +91,10 @@ class Saver(QtWidgets.QWidget):
         #rajouter pouvoir rajouter le chemin
         
         if(self.object_to_save != None):
-            
+            """
+            Save the object into a file
+            the object is converted into binary data
+            """
             self.clear_file()
             
             file = open(self.path + self.file_name + '.txt',"wb")

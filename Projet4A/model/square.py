@@ -2,12 +2,32 @@ from model.polygon import Polygon
 from PyQt5 import QtGui, QtCore
 
 class Square(Polygon):
+    """
+    Class which generate a square
     
+    Methods
+    ---------------
+    
+    generate_poly()
+        This methods create square
+        The number of polygon per column 
+        is calculate with the size of of 1 
+        segment of the triangle and the height 
+        of the triangle.
+    """
 #==============================================================================    
 #   CONSTRUCTOR
 #==============================================================================
     def __init__(self, size , nb_poly_per_line):
-        
+        """
+        Parameters
+        ---------------
+        size : int 
+            the height of the screen
+            
+        nb_poly_per_line : int 
+            number of polygon per line (default is 5)
+        """
         super().__init__(size, nb_poly_per_line)
         
         self.nb_poly_per_column = round((size[1]//self.length))
@@ -31,7 +51,10 @@ class Square(Polygon):
 #==============================================================================
         
     def generate_poly(self):
-            
+        """
+        Generate squares and add them to the 
+        polygon_list
+        """
         polygon_list = []
         for i in range(-1, (self.nb_poly_per_column + 1)):
             
