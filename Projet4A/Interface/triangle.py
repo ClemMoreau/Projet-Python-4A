@@ -4,7 +4,22 @@ from PyQt5 import QtGui, QtCore
 TRIANGLE_CONST = math.sqrt(3)/2
 
 class Triangle(poly.Polygon):
+    """
+    Class which will generate the triangle. 
     
+    ...
+    
+    Attributes
+    ----------
+    none
+    
+    Methods
+    ----------
+    generate_poly(self)
+        Methods wich create the triangle polygon and add it to 
+        the polygon_list
+    
+    """
 #==============================================================================    
 #   CONSTRUCTOR
 #==============================================================================
@@ -15,7 +30,7 @@ class Triangle(poly.Polygon):
 #==============================================================================    
 #   METHODS
 #==============================================================================
-     
+    
     def generate_poly(self):
             
         polygon_list = []
