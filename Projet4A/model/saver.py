@@ -1,21 +1,21 @@
 import pickle
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets
 
-class Saver():
+class Saver(QtWidgets.QWidget):
     
 #==============================================================================    
 #   CONSTRUCTOR
 #==============================================================================
  
-    def __init__(self, obj, file_name, path = None):
+    def __init__(self, object_to_save, file_name, path = None):
+        
+        super().__init__()
         
         self.path = path
         
         self.file_name = file_name
         
-        self.object_to_save = obj
-        
-        self.set_graphic_interface()
+        self.object_to_save = object_to_save
         
 #==============================================================================    
 #   GETTERS
@@ -55,25 +55,21 @@ class Saver():
 #==============================================================================
 
     def clear_file(self):
-        file = open(self.file_name,'w')
+        
+        file = open(self.path + self.file_name + '.txt','w')
         file.close()
         
     def save_object(self):
         
+        #rajouter pouvoir rajouter le chemin
+        
         if(self.object_to_save != None):
-            self.clear_file()
-            file = open(self.file_name,"wb")
-            #self.path +
-            pickle.dump(self.object_to_save, file)
-            file.close()
             
-    def set_graphic_interface(self):
-        self.win = QtWidgets.QMainWindow()
-        
-        #Text label TypeOfPoly
-        label_polygon_type = QtWidgets.QLabel(self.win)
-        label_polygon_type.setGeometry(QtCore.QRect(40, 20, 200, 20))
-        label_polygon_type.setObjectName("label_file_name")
-        label_polygon_type.setText("Please choose a filename to save your tesselation : ")
-        
+            self.clear_file()
+            
+            file = open(self.path + self.file_name + '.txt',"wb")
+            
+            pickle.dump(self.object_to_save, file)
+            
+            file.close()
         

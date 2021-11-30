@@ -14,7 +14,7 @@ class Loader():
         
         self.file_name = file_name
         
-        self.set_graphic_interface()
+        self.object_loaded = None
         
 #==============================================================================    
 #   GETTERS
@@ -53,18 +53,9 @@ class Loader():
           
     def load_object(self):
         
-        file = open(self.file_name,"rb")
+        file = open(self.path + self.file_name,"rb")
+        
         self.object_loaded = pickle.load(file)
+        
         file.close()
-        
-    
-    def set_graphic_interface(self):
-        self.win = QtWidgets.QMainWindow()
-        
-        #Text label TypeOfPoly
-        label_polygon_type = QtWidgets.QLabel(self.win)
-        label_polygon_type.setGeometry(QtCore.QRect(40, 20, 200, 20))
-        label_polygon_type.setObjectName("label_file_name")
-        label_polygon_type.setText("Please choose the filename of the tesselation you wanted to load : ")
-        
         

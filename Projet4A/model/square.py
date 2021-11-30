@@ -1,7 +1,7 @@
-import model.polygon as poly
+from model.polygon import Polygon
 from PyQt5 import QtGui, QtCore
 
-class Square(poly.Polygon):
+class Square(Polygon):
     
 #==============================================================================    
 #   CONSTRUCTOR
@@ -9,6 +9,7 @@ class Square(poly.Polygon):
     def __init__(self, size , nb_poly_per_line):
         
         super().__init__(size, nb_poly_per_line)
+        
         self.nb_poly_per_column = round((size[1]//self.length))
 #==============================================================================    
 #   GETTERS
