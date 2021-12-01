@@ -69,10 +69,8 @@ class SaveController(QtWidgets.QWidget):
         try:
         
              if(self.line_edit_filename.text() != ''):
-                 Saver(TessellationWindow.get_tessellation_widget().get_polygon_information().get_polygon_list(), 
-                   self.line_edit_filename.text(), 'saves/polygon list/').save_object()
-                 Saver(TessellationWindow.get_tessellation_widget().get_polygon_information().get_fixed_points(), 
-                   self.line_edit_filename.text(), 'saves/fixed points/').save_object()
+                 Saver(TessellationWindow.get_tessellation_widget().get_polygon_information(), 
+                   self.line_edit_filename.text(), 'saves/').save_object()
                  self.save_label.setText("File saved !")  
              else:
                  self.save_label.setText("You need to write a filename !")  

@@ -35,7 +35,7 @@ class LoadController(QtWidgets.QWidget):
         self.combo_box_file_to_load = QtWidgets.QComboBox(self)
         self.combo_box_file_to_load.setGeometry(QtCore.QRect(20, 40, 100, 20))
         self.combo_box_file_to_load.setObjectName("combo_box_file_to_load")
-        self.combo_box_file_to_load.addItems(os.listdir('saves/polygon list/'))
+        self.combo_box_file_to_load.addItems(os.listdir('saves/'))
         
         self.load_label = QtWidgets.QLabel(self)
         self.load_label.setGeometry(QtCore.QRect(65, 70, 200, 20))
@@ -50,38 +50,16 @@ class LoadController(QtWidgets.QWidget):
         
     def load(self):
         try:
-            if(TessellationWindow.get_tessellation_widget()):
-                loader = Loader(self.combo_box_file_to_load.currentText(), 'saves/polygon list/');
-                loader.load_object()  
-                if (loader.get_object_loaded()):
-                    TessellationWindow.get_tessellation_widget().get_polygon_information().set_polygon_list(loader.get_object_loaded())
-
-                loader = Loader(self.combo_box_file_to_load.currentText(), 'saves/fixed points/');
-                loader.load_object()  
-                if (loader.get_object_loaded()):
-                    TessellationWindow.get_tessellation_widget().get_polygon_information().set_fixed_points(loader.get_object_loaded())
-                 
-                TessellationWindow.get_tessellation_widget().get_polygon_information().generate_coordinates()
-                TessellationWindow.get_tessellation_widget().update()
-                
-            else:
-                
+            if(TessellationWindow.get_tessellation_widget() == None):
                 TessellationWindow.set_tessellation_widget(Tessellation('Square', 1, SettingsWindow.get_setting_widget().get_combo_box_color().currentText()))
                 
-                loader = Loader(self.combo_box_file_to_load.currentText(), 'saves/polygon list/');
-                loader.load_object()  
-                if (loader.get_object_loaded()):
-                    TessellationWindow.get_tessellation_widget().get_polygon_information().set_polygon_list(loader.get_object_loaded())
-
-                loader = Loader(self.combo_box_file_to_load.currentText(), 'saves/fixed points/');
-                loader.load_object()  
-                if (loader.get_object_loaded()):
-                    TessellationWindow.get_tessellation_widget().get_polygon_information().set_fixed_points(loader.get_object_loaded())
-                 
-                TessellationWindow.get_tessellation_widget().get_polygon_information().generate_coordinates()
-                TessellationWindow.get_tessellation_widget().update()
+            
+            loader = Loader(self.combo_box_file_to_load.currentText(), 'saves/');
+            loader.load_object()
+            TessellationWindow.get_tessellation_widget().set_polygon_information(loader.get_object_loaded())
+            TessellationWindow.get_tessellation_widget().update()
                 
-                TessellationWindow.show_widget()
+            TessellationWindow.show_widget()
                 
             self.load_label.setText("File loaded !")
                 

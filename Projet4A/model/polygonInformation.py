@@ -1,9 +1,12 @@
 from model.square import Square
 from model.triangle import Triangle
 from model.hexagon import Hexagon
+from model.vector import Vector
+from controller.centralSymmetry import CentralSymmetry
 
 from view.settingsWindow import SettingsWindow
 
+from PyQt5 import QtCore
 
 class PolygonInformation(object):
     
@@ -11,7 +14,7 @@ class PolygonInformation(object):
     #   CONSTRUCTOR
     #==========================================================================
 
-    def __init__(self, polygon_type, nb_polygon_per_line):
+    def __init__(self, polygon_type, nb_polygon_per_line , central_symmetry):
         
         
         if (polygon_type == "Square"):
@@ -35,6 +38,11 @@ class PolygonInformation(object):
         
         self.fixed_points = []
         self.generate_non_modifiable_point()
+        
+        self.central_symmetry = None
+        
+        if (central_symmetry):
+            self.central_symmetry = CentralSymmetry(self.fixed_points, self.polygon_list)
         
     #==========================================================================
     #   GETTERS
@@ -105,3 +113,53 @@ class PolygonInformation(object):
         if(self.fixed_points.count(point) != 0):
                 return False
         return True
+    
+    def add_point_to_all(self, point, indice_in_poly, indice_of_poly):
+        
+        vector = Vector(self.polygon_list[indice_of_poly].at(indice_in_poly - 1), point)  
+        
+        for j in range(0,len(self.polygon_list)):
+            
+           point = QtCore.QPoint(vector.get_vector()[0] + self.polygon_list[j].at(indice_in_poly - 1).x(),
+                                  vector.get_vector()[1] + self.polygon_list[j].at(indice_in_poly - 1).y())
+           
+           self.polygon_list[j].insert(indice_in_poly,point)
+           
+           
+           if (self.central_symmetry):
+               
+               indice = ((self.polygon_list[j].count() - 1)//2 + indice_in_poly) % (self.polygon_list[j].count() - 1)
+               
+               if indice_in_poly < (self.polygon_list[j].count() - 1)//2:
+                   indice +=1
+               
+               if indice_in_poly == (self.polygon_list[j].count() - 1)//2:
+                   indice = self.polygon_list[j].count()
+                   
+               sypoint = self.central_symmetry.calculatre_central_symmetry(point, j)
+              
+               self.polygon_list[j].insert(indice,sypoint)
+               self.central_symmetry.set_symmetry_indice(indice)
+               
+
+    def modify_point_in_all(self, new_point, indice_in_poly, indice_of_poly):
+        
+        vector = Vector(self.polygon_list[indice_of_poly].at(indice_in_poly - 1), new_point)  
+        
+        for j in range(0,len(self.polygon_list)):
+            
+            point = QtCore.QPoint(vector.get_vector()[0] + self.polygon_list[j].at(indice_in_poly - 1).x(),
+                                   vector.get_vector()[1] + self.polygon_list[j].at(indice_in_poly - 1).y())
+            
+            if (self.central_symmetry):
+                sypoint = self.central_symmetry.calculatre_central_symmetry(point, j)
+                indice = self.central_symmetry.get_symmetry_indice()
+                
+                if(indice < indice_in_poly):
+                    indice_in_poly += 1
+                    
+                
+                self.polygon_list[j].replace(indice_in_poly,point)
+                self.polygon_list[j].replace(indice,sypoint)
+            else:
+                self.polygon_list[j].replace(indice_in_poly,point)
