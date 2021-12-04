@@ -110,16 +110,13 @@ class Tessellation(QtWidgets.QWidget):
 
         if(not self.cursor_near_point(event.pos())):
             QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        try:
                 
-            if(self.point_to_move): 
-                self.polygon_information.modify_point_in_all(event.pos(), self.indice_in_poly, self.indice_of_poly)
-        except:
-            print('ici le pb')
+        if(self.point_to_move): 
+            self.polygon_information.modify_point_in_all(event.pos(), self.indice_in_poly, self.indice_of_poly)
         self.update()
        
     def mousePressEvent(self, event):
-        try:
+
             search_area = self.find_search_area(event.pos())
             
             for j in range(0,len(search_area)):
@@ -160,8 +157,6 @@ class Tessellation(QtWidgets.QWidget):
                                 self.polygon_information.add_point_to_all(event.pos(), self.indice_in_poly, self.indice_of_poly)
                             
                             return
-        except:
-            print('nop c ici')
             
     def closeEvent(self, event):
         

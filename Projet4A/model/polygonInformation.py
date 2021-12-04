@@ -128,18 +128,18 @@ class PolygonInformation(object):
            
            if (self.central_symmetry):
                
-               indice = ((self.polygon_list[j].count() - 1)//2 + indice_in_poly) % (self.polygon_list[j].count() - 1)
+               symmetry_indice = ((self.polygon_list[j].count() - 1)//2 + indice_in_poly) % (self.polygon_list[j].count() - 1)
                
                if indice_in_poly < (self.polygon_list[j].count() - 1)//2:
-                   indice +=1
+                   symmetry_indice +=1
                
                if indice_in_poly == (self.polygon_list[j].count() - 1)//2:
-                   indice = self.polygon_list[j].count()
+                   symmetry_indice = self.polygon_list[j].count()
                    
                sypoint = self.central_symmetry.calculatre_central_symmetry(point, j)
               
-               self.polygon_list[j].insert(indice,sypoint)
-               self.central_symmetry.set_symmetry_indice(indice)
+               self.polygon_list[j].insert(symmetry_indice,sypoint)
+               self.central_symmetry.set_symmetry_indice(symmetry_indice)
                
 
     def modify_point_in_all(self, new_point, indice_in_poly, indice_of_poly):
@@ -153,13 +153,22 @@ class PolygonInformation(object):
             
             if (self.central_symmetry):
                 sypoint = self.central_symmetry.calculatre_central_symmetry(point, j)
-                indice = self.central_symmetry.get_symmetry_indice()
                 
-                if(indice < indice_in_poly):
-                    indice_in_poly += 1
+                symmetry_indice = self.central_symmetry.get_symmetry_indice()
+                symmetry_indice = ((self.polygon_list[j].count() - 2)//2 + indice_in_poly) % (self.polygon_list[j].count() - 2)
+                
+                if indice_in_poly < (self.polygon_list[j].count() - 2)//2:
+                    symmetry_indice +=1
+                
+                if indice_in_poly == (self.polygon_list[j].count() - 2)//2:
+                    symmetry_indice = self.polygon_list[j].count() - 1
+                
+                indice = indice_in_poly 
+                
+                if(symmetry_indice < indice_in_poly):
+                    indice += 1
                     
-                
-                self.polygon_list[j].replace(indice_in_poly,point)
-                self.polygon_list[j].replace(indice,sypoint)
+                self.polygon_list[j].replace(indice,point)
+                self.polygon_list[j].replace(symmetry_indice,sypoint)
             else:
                 self.polygon_list[j].replace(indice_in_poly,point)
