@@ -44,6 +44,8 @@ class PolygonInformation(object):
         if (central_symmetry):
             self.central_symmetry = CentralSymmetry(self.fixed_points, self.polygon_list)
         
+        self.added_point = False
+        
     #==========================================================================
     #   GETTERS
     #==========================================================================
@@ -165,10 +167,15 @@ class PolygonInformation(object):
                 
                 indice = indice_in_poly 
                 
-                if(symmetry_indice < indice_in_poly):
+                if(symmetry_indice < indice_in_poly and self.added_point):
                     indice += 1
+                    
+                if(symmetry_indice < indice_in_poly and not self.added_point):
+                    symmetry_indice -= 1    
+                    
                     
                 self.polygon_list[j].replace(indice,point)
                 self.polygon_list[j].replace(symmetry_indice,sypoint)
+                
             else:
                 self.polygon_list[j].replace(indice_in_poly,point)

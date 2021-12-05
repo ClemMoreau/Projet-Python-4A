@@ -105,6 +105,7 @@ class Tessellation(QtWidgets.QWidget):
         if(self.point_to_move):
            self.update()
            self.point_to_move = False
+           self.polygon_information.added_point = False
         
     def mouseMoveEvent(self, event):
 
@@ -134,7 +135,8 @@ class Tessellation(QtWidgets.QWidget):
                             if(self.indice_of_poly != None):
                                 
                                 self.point_to_move = True
-                                self.polygon_information.modify_point_in_all(event.pos(), self.indice_in_poly, self.indice_of_poly) 
+                                self.polygon_information.modify_point_in_all(event.pos(), self.indice_in_poly, self.indice_of_poly)
+                                self.polygon_information.added_point = False 
                         return
                         
                        
@@ -155,6 +157,8 @@ class Tessellation(QtWidgets.QWidget):
                                 
                                 self.point_to_move = True 
                                 self.polygon_information.add_point_to_all(event.pos(), self.indice_in_poly, self.indice_of_poly)
+                                
+                                self.polygon_information.added_point = True
                             
                             return
             
