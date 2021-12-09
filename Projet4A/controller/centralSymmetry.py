@@ -5,6 +5,10 @@ from model.vector import Vector
 
 class CentralSymmetry(object):
     
+    # =============== #
+    #   CONSTRUCTOR   #
+    # =============== #
+    
     def __init__(self, fixed_points, polygon_list):
         
         self.fixed_points = fixed_points

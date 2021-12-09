@@ -18,9 +18,9 @@ COLOR_ALLOWED = ["white", "red", "green", "blue",
 
 class Tessellation(QtWidgets.QWidget):
     
-    #==========================================================================
-    #   CONSTRUCTOR
-    #==========================================================================
+    # =============== #
+    #   CONSTRUCTOR   #
+    # =============== #
     
     def __init__(self, polygon_type, nb_polygon_per_line, central_symmetry, color = "cyan"):
         
@@ -41,9 +41,9 @@ class Tessellation(QtWidgets.QWidget):
         SaveWindow.set_save_widget(SaveController())
         SaveWindow.save_widget.show()
     
-    #==========================================================================
-    #   GETTERS
-    #==========================================================================
+    # =========== #
+    #   GETTERS   #
+    # =========== #
 
     def get_polygon_information(self):
         return self.polygon_information
@@ -60,9 +60,9 @@ class Tessellation(QtWidgets.QWidget):
     def get_color(self):
         return self.color
     
-    #==========================================================================
-    #   SETTERS
-    #==========================================================================
+    # =========== #
+    #   SETTERS   #
+    # =========== #
     
     def set_polygon_information(self, polygon_information):
         if(polygon_information):
@@ -82,9 +82,10 @@ class Tessellation(QtWidgets.QWidget):
     def set_color(self, color):
         if(color in COLOR_ALLOWED):
             self.color = color
-    #==============================================================================    
-    #   METHODS
-    #==============================================================================
+            
+    # =========== #
+    #   METHODS   #
+    # =========== #
 
     def paintEvent(self, event):
         

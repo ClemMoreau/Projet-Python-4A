@@ -6,22 +6,95 @@ TRIANGLE_CONST = math.sqrt(3)/2
 HEXAGON_CONST = math.sqrt(3)
 
 class Hexagon(Polygon):
+    """
+    Attributes
+    ----------
+    nb_poly_per_column : int
+        number of polygon per column on the screen
     
-    #==========================================================================
-    #   CONSTRUCTOR
-    #==========================================================================
+    Methods
+    ---------------
+    generate_poly()
+       This methods create hexagon to show on the tesselation
+    """
+    
+    # =============== #
+    #   CONSTRUCTOR   #
+    # =============== #
     def __init__(self, size , nb_poly_per_line):
+        """
         
+        Initialize all the necessary attributes for the triangle object.
+
+        Parameters
+        ----------
+        size : TYPE
+            DESCRIPTION.
+        nb_poly_per_line : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
         super().__init__(size, nb_poly_per_line)
         
         self.nb_poly_per_column = round((size[1]//self.length))
         
-    #==============================================================================
-    #   METHODS
-    #==============================================================================
+            
+    # =========== #
+    #   GETTERS   #
+    # =========== #
+
+    def get_nb_poly_per_column(self):
+        """
+        Getter of the nb_poly_per_column attribute
+        
+        Returns
+        -------
+        self.nb_poly_per_column
+        """
+        
+        return self.nb_poly_per_column 
+    
+    # =========== #
+    #   SETTERS   #
+    # =========== #
+    
+    def set_nb_poly_per_column(self, nb):
+        """
+        Setter of the nb_poly_per_column attribute
+        
+        Parameters
+        ----------
+        nb : int
+            new number of polygon per line.
+
+        Returns
+        -------
+        None.
+        """
+        
+        if(nb > 0):
+            
+            self.nb_poly_per_column = nb
+            
+    # =========== #
+    #   METHODS   #
+    # =========== #
         
     def generate_poly(self):
-            
+        """
+        Method which create hexagons using object's attribute
+
+        Returns
+        -------
+        polygon_list : list<Hexagon>
+            the list of generated hexagons.
+
+        """
+        
         polygon_list = []
         for i in range(-2, (self.nb_poly_per_column + 1)):
             

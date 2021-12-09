@@ -10,9 +10,9 @@ from PyQt5 import QtCore
 
 class PolygonInformation(object):
     
-    #==========================================================================
-    #   CONSTRUCTOR
-    #==========================================================================
+    # =============== #
+    #   CONSTRUCTOR   #
+    # =============== #
 
     def __init__(self, polygon_type, nb_polygon_per_line , central_symmetry):
         

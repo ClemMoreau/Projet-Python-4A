@@ -3,23 +3,28 @@ from PyQt5 import QtGui, QtCore
 
 class Square(Polygon):
     """
-    Class which generate a square
+    Class which represent squares
+    
+    Attributes
+    ----------
+    nb_poly_per_column : int
+        number of polygon per column on the screen
     
     Methods
     ---------------
-    
     generate_poly()
-        This methods create square
-        The number of polygon per column 
-        is calculate with the size of of 1 
-        segment of the triangle and the height 
-        of the triangle.
+        This methods create squares to show on the tesselation
     """
-#==============================================================================    
-#   CONSTRUCTOR
-#==============================================================================
+    
+    # =============== #
+    #   CONSTRUCTOR   #
+    # =============== #
+    
     def __init__(self, size , nb_poly_per_line):
         """
+        
+        Initialize all the necessary attributes for the square object.
+        
         Parameters
         ---------------
         size : int 
@@ -28,62 +33,97 @@ class Square(Polygon):
         nb_poly_per_line : int 
             number of polygon per line (default is 5)
         """
+        
         super().__init__(size, nb_poly_per_line)
         
         self.nb_poly_per_column = round((size[1]//self.length))
-#==============================================================================    
-#   GETTERS
-#==============================================================================
+        
+    # =========== #
+    #   GETTERS   #
+    # =========== #
 
     def get_nb_poly_per_column(self):
+        """
+        Getter of the nb_poly_per_column attribute
+        
+        Returns
+        -------
+        self.nb_poly_per_column
+        """
+        
         return self.nb_poly_per_column 
     
-#==============================================================================    
-#   SETTERS
-#==============================================================================
-
+    # =========== #
+    #   SETTERS   #
+    # =========== #
+    
     def set_nb_poly_per_column(self, nb):
+        """
+        Setter of the nb_poly_per_column attribute
+        
+        Parameters
+        ----------
+        nb : int
+            new number of polygon per line.
+
+        Returns
+        -------
+        None.
+        """
         if(nb > 0):
+            
             self.nb_poly_per_column = nb
                
-#==============================================================================    
-#   METHODS
-#==============================================================================
-        
+    # =========== #
+    #   METHODS   #
+    # =========== #
+
     def generate_poly(self):
         """
-        Generate squares and add them to the 
-        polygon_list
+        
+        Generate a list of squares with object's attribut
+
+        Returns
+        -------
+        polygon_list : list<Square>
+            DESCRIPTION.
+
         """
         polygon_list = []
         for i in range(-1, (self.nb_poly_per_column + 1)):
             
-            #boolean used to drawn on in two squares
+            # Boolean used to drawn on in two squares
             if (i % 2 == 0):
                 paint = True
+                
             else:
                 paint = False
                 
             for j in range(-1, (self.nb_poly_per_line + 1)):
                 
                 if(paint):
-                    #new polygon in the tessellation
-                    polygon = QtGui.QPolygon()
+                    
+                    # New square in the tessellation
+                    square = QtGui.QPolygon()
                     
                     abscissa = (j * self.length)
                     ordinate = (i * self.length)
                     
-                    #Top-Left point
-                    polygon << QtCore.QPoint(abscissa, ordinate)
-                    #Top-Right point
-                    polygon << QtCore.QPoint(self.length + abscissa, ordinate)
-                    #Bot-right point
-                    polygon << QtCore.QPoint(self.length + abscissa, self.length + ordinate)
-                    #Bot-left point
-                    polygon << QtCore.QPoint(abscissa, self.length + ordinate)
+                    # Top-Left point
+                    square << QtCore.QPoint(abscissa, 
+                                            ordinate)
+                    # Top-Right point
+                    square << QtCore.QPoint(self.length + abscissa, 
+                                            ordinate)
+                    # Bot-right point
+                    square << QtCore.QPoint(self.length + abscissa, 
+                                            self.length + ordinate)
+                    # Bot-left point
+                    square << QtCore.QPoint(abscissa, 
+                                            self.length + ordinate)
                     
-                    polygon_list.append(polygon)
-                    
+                    polygon_list.append(square)
                     
                 paint = not paint
+                
         return polygon_list

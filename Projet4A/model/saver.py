@@ -10,15 +10,15 @@ class Saver(QtWidgets.QWidget):
     ---------------
     
     clear_file()
-        method which create an empty file if 
-        it doesnt exist
+        method which clear the file associate with self
     save_object()
         save the object into a file
         the object is converted into binary data
     """
-#==============================================================================    
-#   CONSTRUCTOR
-#==============================================================================
+    
+    # =============== #
+    #   CONSTRUCTOR   #
+    # =============== #
  
     def __init__(self, object_to_save, file_name, path = None):
         """
@@ -28,11 +28,13 @@ class Saver(QtWidgets.QWidget):
         object_to_save : object
             the object that the user want to save
         file_name : str
-            name of the file (.txt)
+            name of the file
         path : str
             path to the place where the file is saved
             
         """
+        
+        # Con
         super().__init__()
         
         self.path = path
@@ -41,9 +43,9 @@ class Saver(QtWidgets.QWidget):
         
         self.object_to_save = object_to_save
         
-#==============================================================================    
-#   GETTERS
-#==============================================================================
+    # =========== #
+    #   GETTERS   #
+    # =========== #
 
     def get_path(self):
     
@@ -57,9 +59,9 @@ class Saver(QtWidgets.QWidget):
         
         return self.object_to_save
 
-#==============================================================================    
-#   SETTERS
-#==============================================================================
+    # =========== #
+    #   SETTERS   #
+    # =========== #
     
     def set_path(self, path):
         
@@ -74,9 +76,9 @@ class Saver(QtWidgets.QWidget):
         if(obj != None):
             self.object_to_save = obj
  
-#==============================================================================    
-#   METHODS
-#==============================================================================
+    # =========== #
+    #   METHODS   #
+    # =========== #
 
     def clear_file(self):
         """
