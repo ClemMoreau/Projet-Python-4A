@@ -4,6 +4,7 @@ from model.hexagon import Hexagon
 from model.vector import Vector
 
 from controller.centralSymmetry import CentralSymmetry
+from controller.axialSymetry import AxialSymmetry
 
 from view.settingsWindow import SettingsWindow
 
@@ -57,7 +58,7 @@ class PolygonInformation(object):
         #   CONSTRUCTOR   #
         # =============== #
 
-    def __init__(self, polygon_type, nb_polygon_per_line , central_symmetry):
+    def __init__(self, polygon_type, nb_polygon_per_line , central_symmetry, axial_symmetry):
         """
         Constructor of the PolygonInformation class
 
@@ -76,6 +77,7 @@ class PolygonInformation(object):
         None.
 
         """
+        
         
         if (polygon_type == "Square"):
             polygon = Square(SettingsWindow.max_screen_size, 
@@ -104,6 +106,10 @@ class PolygonInformation(object):
         if (central_symmetry):
             self.central_symmetry = CentralSymmetry(self.fixed_points, self.polygon_list)
         
+        self.axial_symmetry = None 
+        if (axial_symmetry):
+            self.axial_symmetry = AxialSymmetry(self.fixed_points, self.polygon_list)
+            
         self.added_point = False
             
         # =========== #
@@ -429,6 +435,22 @@ class PolygonInformation(object):
               
                 self.polygon_list[j].insert(symmetry_indice,sypoint)
                
+           
+           elif (self.axial_symmetry):
+               
+               symmetry_indice = ((self.polygon_list[j].count() - 1)//2 + indice_in_poly) % (self.polygon_list[j].count() - 1)
+               
+               if indice_in_poly < (self.polygon_list[j].count() - 1)//2:
+                   symmetry_indice +=1
+               
+               if indice_in_poly == (self.polygon_list[j].count() - 1)//2:
+                   symmetry_indice = self.polygon_list[j].count()
+                   
+               sympoint = self.axial_symmetry.calculate_axial_symmetry(point, j)
+              
+               self.polygon_list[j].insert(symmetry_indice,sympoint)
+               self.axial_symmetry.set_symmetry_indice(symmetry_indice)
+                  
 
     def modify_point_in_all(self, new_point, indice_in_poly, indice_of_poly):
         """
@@ -496,5 +518,30 @@ class PolygonInformation(object):
                 
                 self.polygon_list[j].replace(symmetry_indice,sypoint)
                 
+             
+            elif (self.axial_symmetry):
+                sympoint = self.axial_symmetry.calculate_axial_symmetry(point, j)
+                
+                symmetry_indice = self.axial_symmetry.get_symmetry_indice()
+                symmetry_indice = ((self.polygon_list[j].count() - 2)//2 + indice_in_poly) % (self.polygon_list[j].count() - 2)
+                
+                if indice_in_poly < (self.polygon_list[j].count() - 2)//2:
+                    symmetry_indice +=1
+                
+                if indice_in_poly == (self.polygon_list[j].count() - 2)//2:
+                    symmetry_indice = self.polygon_list[j].count() - 1
+                
+                indice = indice_in_poly 
+                
+                if(symmetry_indice < indice_in_poly and self.added_point):
+                    indice += 1
+                    
+                if(symmetry_indice < indice_in_poly and not self.added_point):
+                    symmetry_indice -= 1    
+                     
+                self.polygon_list[j].replace(indice,point)
+                self.polygon_list[j].replace(symmetry_indice,sympoint)
+                
             else:
-                self.polygon_list[j].replace(indice_in_poly,point)
+                self.polygon_list[j].replace(indice_in_poly,point)  
+            
