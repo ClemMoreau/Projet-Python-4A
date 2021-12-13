@@ -199,9 +199,14 @@ class Settings(QtWidgets.QWidget):
         self.radio_button_central_symmetry.setGeometry(QtCore.QRect(50, 140, 180, 20))
         self.radio_button_central_symmetry.setObjectName("radio_button_central_symmetry")
         
+        # Radio Button used as an option for central symmetry
+        self.radio_button_axial_symmetry = QtWidgets.QRadioButton("Axial symmetry",self)
+        self.radio_button_axial_symmetry.setGeometry(QtCore.QRect(50, 160, 180, 20))
+        self.radio_button_axial_symmetry.setObjectName("radio_button_axial_symmetry")
+        
         # Pushbutton to show the drawed tesselation
         push_button_draw = QtWidgets.QPushButton("Draw !",self)
-        push_button_draw.setGeometry(QtCore.QRect(90, 160, 90, 50))
+        push_button_draw.setGeometry(QtCore.QRect(90, 180, 90, 50))
         push_button_draw.setObjectName("push_button_draw")
         push_button_draw.clicked.connect(self.button_click_action)
 
@@ -221,10 +226,10 @@ class Settings(QtWidgets.QWidget):
         nb_polygon_per_line = self.spin_box_number_poly_per_line.value()
         color = self.combo_box_color.currentText()
         central_symmetry = self.radio_button_central_symmetry.isChecked()
-        
+        axial_symetry = self.radio_button_axial_symmetry.isChecked()
         SettingsWindow.close_widget()
         
-        TessellationWindow.set_tessellation_widget(Tessellation(polygon_type, nb_polygon_per_line,central_symmetry, color))
+        TessellationWindow.set_tessellation_widget(Tessellation(polygon_type, nb_polygon_per_line,central_symmetry, axial_symetry, color))
         TessellationWindow.show_widget()
         
         LoadWindow.close_widget()

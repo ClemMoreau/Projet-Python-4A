@@ -22,11 +22,11 @@ class Tessellation(QtWidgets.QWidget):
     #   CONSTRUCTOR   #
     # =============== #
     
-    def __init__(self, polygon_type, nb_polygon_per_line, central_symmetry, color = "cyan"):
+    def __init__(self, polygon_type, nb_polygon_per_line, central_symmetry, axial_symmetry, color = "cyan"):
         
         super().__init__()
         
-        self.polygon_information = PolygonInformation(polygon_type, nb_polygon_per_line, central_symmetry)
+        self.polygon_information = PolygonInformation(polygon_type, nb_polygon_per_line, central_symmetry, axial_symmetry)
         
         self.point_to_move = False
         self.indice_in_poly = -1
