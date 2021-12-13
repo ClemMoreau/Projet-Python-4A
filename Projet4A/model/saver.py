@@ -1,7 +1,6 @@
 import pickle
-from PyQt5 import QtWidgets
 
-class Saver(QtWidgets.QWidget):
+class Saver():
     """
     Class which aim to save the deformation
     apllied to the figure
@@ -20,27 +19,27 @@ class Saver(QtWidgets.QWidget):
     #   CONSTRUCTOR   #
     # =============== #
  
-    def __init__(self, object_to_save, file_name, path = None):
+    def __init__(self, object_to_save, filename, path = None):
         """
         Parameters
         ---------------
         
         object_to_save : object
             the object that the user want to save
-        file_name : str
+        filename : str
             name of the file
         path : str
             path to the place where the file is saved
             
         """
         
-        # Con
-        super().__init__()
-        
+        # Path where file is saved
         self.path = path
         
-        self.file_name = file_name
+        # Filename of the file to save
+        self.filename = filename
         
+        # Tesselation to save
         self.object_to_save = object_to_save
         
     # =========== #
@@ -48,15 +47,41 @@ class Saver(QtWidgets.QWidget):
     # =========== #
 
     def get_path(self):
-    
+        """
+        Getter of the path attribute
+
+        Returns
+        -------
+        self.path : string
+            Path where file is saved.
+
+        """
+
         return self.path
     
-    def get_file_name(self):
-    
-        return self.file_name
+    def get_filename(self):
+        """
+        Getter of the filename attribute
+
+        Returns
+        -------
+        self.filename : STRING
+            Filename of the file to save.
+
+        """
+        
+        return self.filename
     
     def get_object_to_save(self):
-        
+        """
+        Getter of the object_to_save attribute
+
+        Returns
+        -------
+        self.object_to_save : OBJECT 
+            Tesselation to save.
+
+        """
         return self.object_to_save
 
     # =========== #
@@ -64,14 +89,53 @@ class Saver(QtWidgets.QWidget):
     # =========== #
     
     def set_path(self, path):
+        """
+        Setter of the path attribute
+
+        Parameters
+        ----------
+        path : STRING
+            new location where save.
+
+        Returns
+        -------
+        None.
+
+        """
         
         self.path = path
         
-    def set_file_name(self, file_name):
-        
-        self.file_name = file_name
+    def set_filename(self, filename):
+        """
+        Setter of the filename
+
+        Parameters
+        ----------
+        filename : STRING
+            name of the file saved.
+
+        Returns
+        -------
+        None.
+
+        """
+
+        self.filename = filename
         
     def set_object_to_save(self, obj):
+        """
+        Setter of the object_to_save
+
+        Parameters
+        ----------
+        obj : OBJECT
+            the new object to save in the file.
+
+        Returns
+        -------
+        None.
+
+        """        
         
         if(obj != None):
             self.object_to_save = obj
@@ -82,26 +146,35 @@ class Saver(QtWidgets.QWidget):
 
     def clear_file(self):
         """
-        Method which create an empty file if 
-        it doesnt exist
+        Method which clear the file where object is saved
+
+        Returns
+        -------
+        None.
+
         """
-        file = open(self.path + self.file_name + '.txt','w')
+        
+        file = open(self.path + self.filename + '.txt','w')
         file.close()
         
     def save_object(self):
-        
-        #rajouter pouvoir rajouter le chemin
-        
+        """
+        Save the object into a file
+        The object is converted into binary data
+
+        Returns
+        -------
+        None.
+
+        """
         if(self.object_to_save != None):
-            """
-            Save the object into a file
-            the object is converted into binary data
-            """
+            
+            # Before saving, file need to be empty
             self.clear_file()
             
-            file = open(self.path + self.file_name + '.txt',"wb")
+            file = open(self.path + self.filename + '.txt',"wb")
             
+            # Object saved in the file
             pickle.dump(self.object_to_save, file)
             
             file.close()
-        

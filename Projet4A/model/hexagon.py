@@ -111,40 +111,40 @@ class Hexagon(Polygon):
                 
                 if(paint):
                     #new polygon in the tessellation
-                    polygon = QtGui.QPolygonF()
+                    polygon = QtGui.QPolygon()
                     
                     
                 if (j%2 == 0) :
-                    polygon = QtGui.QPolygonF()
+                    polygon = QtGui.QPolygon()
                     #haut milieu
-                    polygon << QtCore.QPointF((TRIANGLE_CONST) * self.length + ordinate * HEXAGON_CONST,  abscissa * 1.5)
+                    polygon << QtCore.QPoint((TRIANGLE_CONST) * self.length + ordinate * HEXAGON_CONST,  abscissa * 1.5)
                     #point haut gauche
-                    polygon << QtCore.QPointF(ordinate * HEXAGON_CONST, 0.5* self.length + abscissa * 1.5)
+                    polygon << QtCore.QPoint(ordinate * HEXAGON_CONST, 0.5* self.length + abscissa * 1.5)
                     #point bas gauche 
-                    polygon << QtCore.QPointF(ordinate * HEXAGON_CONST, 1.5 * (self.length +   abscissa))
+                    polygon << QtCore.QPoint(ordinate * HEXAGON_CONST, 1.5 * (self.length +   abscissa))
                     #point bas milieu
-                    polygon << QtCore.QPointF((TRIANGLE_CONST) * self.length + ordinate * HEXAGON_CONST, 2 * self.length + 1.5 * abscissa)
+                    polygon << QtCore.QPoint((TRIANGLE_CONST) * self.length + ordinate * HEXAGON_CONST, 2 * self.length + 1.5 * abscissa)
                     #point bas droite
-                    polygon << QtCore.QPointF(HEXAGON_CONST * self.length + HEXAGON_CONST * ordinate, 1.5 * (self.length + abscissa))
+                    polygon << QtCore.QPoint(HEXAGON_CONST * self.length + HEXAGON_CONST * ordinate, 1.5 * (self.length + abscissa))
                     #point haut droite
-                    polygon << QtCore.QPointF(HEXAGON_CONST * self.length + HEXAGON_CONST * ordinate, self.length * 0.5 + abscissa * 1.5 )
+                    polygon << QtCore.QPoint(HEXAGON_CONST * self.length + HEXAGON_CONST * ordinate, self.length * 0.5 + abscissa * 1.5 )
                     polygon_list.append(polygon)            
                     
-                    polygon2 = QtGui.QPolygonF()
+                    polygon2 = QtGui.QPolygon()
                     #haut milieu
-                    polygon2 << QtCore.QPointF(ordinate * HEXAGON_CONST, 1.5 * (self.length + abscissa))
+                    polygon2 << QtCore.QPoint(ordinate * HEXAGON_CONST, 1.5 * (self.length + abscissa))
                     #haut gauche 
-                    polygon2 << QtCore.QPointF((ordinate* HEXAGON_CONST) - HEXAGON_CONST * self.length * 0.5 , 2 * self.length +   abscissa * 1.5)                    
+                    polygon2 << QtCore.QPoint((ordinate* HEXAGON_CONST) - HEXAGON_CONST * self.length * 0.5 , 2 * self.length +   abscissa * 1.5)                    
                     #bas gauche
-                    polygon2 << QtCore.QPointF((ordinate* HEXAGON_CONST) - HEXAGON_CONST *self.length * 0.5 , 3 * self.length +   abscissa * 1.5)                    
+                    polygon2 << QtCore.QPoint((ordinate* HEXAGON_CONST) - HEXAGON_CONST *self.length * 0.5 , 3 * self.length +   abscissa * 1.5)                    
                     
                     #bas milieu 
-                    polygon2 << QtCore.QPointF(ordinate * HEXAGON_CONST, 3.5 * self.length + abscissa * 1.5)
+                    polygon2 << QtCore.QPoint(ordinate * HEXAGON_CONST, 3.5 * self.length + abscissa * 1.5)
                     #bas droite 
-                    polygon2 << QtCore.QPointF(TRIANGLE_CONST * self.length + ordinate * HEXAGON_CONST, abscissa * 1.5 + 3 * self.length)
+                    polygon2 << QtCore.QPoint(TRIANGLE_CONST * self.length + ordinate * HEXAGON_CONST, abscissa * 1.5 + 3 * self.length)
                     
                     #haut droite 
-                    polygon2 << QtCore.QPointF(TRIANGLE_CONST * self.length + ordinate * HEXAGON_CONST, abscissa * 1.5 + 2 * self.length)
+                    polygon2 << QtCore.QPoint(TRIANGLE_CONST * self.length + ordinate * HEXAGON_CONST, abscissa * 1.5 + 2 * self.length)
                     
                     polygon_list.append(polygon2)
 
