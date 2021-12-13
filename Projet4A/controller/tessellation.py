@@ -24,7 +24,7 @@ class Tessellation(QtWidgets.QWidget):
         #   CONSTRUCTOR   #
         # =============== #
     
-    def __init__(self, polygon_type, nb_polygon_per_line, central_symmetry = False, color = "cyan"):
+    def __init__(self, polygon_type, nb_polygon_per_line, central_symmetry = False, axial_symmetry = False, color = "cyan"):
         """
         Constructor of the Tessellation class
 

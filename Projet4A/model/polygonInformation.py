@@ -436,7 +436,7 @@ class PolygonInformation(object):
                 self.polygon_list[j].insert(symmetry_indice,sypoint)
                
            
-           elif (self.axial_symmetry):
+            elif (self.axial_symmetry):
                
                symmetry_indice = ((self.polygon_list[j].count() - 1)//2 + indice_in_poly) % (self.polygon_list[j].count() - 1)
                

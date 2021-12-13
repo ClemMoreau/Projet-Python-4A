@@ -229,7 +229,7 @@ class Settings(QtWidgets.QWidget):
         axial_symetry = self.radio_button_axial_symmetry.isChecked()
         SettingsWindow.close_widget()
         
-        TessellationWindow.set_tessellation_widget(Tessellation(polygon_type, nb_polygon_per_line,central_symmetry, axial_symetry, color))
+        TessellationWindow.set_tessellation_widget(Tessellation(polygon_type, nb_polygon_per_line, central_symmetry, axial_symetry, color))
         TessellationWindow.show_widget()
         
         LoadWindow.close_widget()
