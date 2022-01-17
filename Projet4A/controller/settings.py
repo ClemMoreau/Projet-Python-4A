@@ -10,8 +10,7 @@ from PyQt5 import QtWidgets, QtCore
 COLOR_ALLOWED = ["white", "red", "green", "blue",
                  "black", "darkRed", "darkGreen", "darkBlue",
                  "cyan", "magenta", "yellow", "gray",
-                 "darkCyan", "darkMagenta", "darkYellow", "darkGray", "lightGray",
-                 'rainbow']
+                 "darkCyan", "darkMagenta", "darkYellow", "darkGray", "lightGray"]
 
 # List of the type of polygon allowed in the software
 POLYGON_TYPE = ["Triangle", "Square", "Hexagon"]
@@ -44,7 +43,8 @@ class Settings(QtWidgets.QWidget):
 
     def __init__(self):
         """
-        
+        Constructor of the Settings class, used to call parent constructor and
+        initialize widget.
         
         Returns
         -------
@@ -234,7 +234,3 @@ class Settings(QtWidgets.QWidget):
         
         LoadWindow.close_widget()
         LoadWindow.show_widget()
-        
-    def closeEvent(self, event):
-        
-        pass

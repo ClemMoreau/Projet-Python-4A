@@ -1,6 +1,6 @@
-from model.polygonInformation import PolygonInformation
 from model.vector import Vector
 
+from controller.polygonInformation import PolygonInformation
 from controller.saveController import SaveController
 
 from view.saveWindow import SaveWindow
@@ -15,8 +15,7 @@ MARGIN_ALLOWED = 2
 COLOR_ALLOWED = ["white", "red", "green", "blue",
                  "black", "darkRed", "darkGreen", "darkBlue",
                  "cyan", "magenta", "yellow", "gray",
-                 "darkCyan", "darkMagenta", "darkYellow", "darkGray", "lightGray",
-                 'rainbow']
+                 "darkCyan", "darkMagenta", "darkYellow", "darkGray", "lightGray"]
 
 class Tessellation(QtWidgets.QWidget):
     
@@ -37,7 +36,10 @@ class Tessellation(QtWidgets.QWidget):
         central_symmetry : BOOL, optional
             if user want to add central symmetry in the tesselation.
             The default is False.
-        color : TYPE, optional
+        axial_symmetry : BOOL, optional
+            if user want to add axial symmetry in the tesselation.
+            The default is False.
+        color : STRING, optional
             color to draw polygons. 
             The default is "cyan".
 
@@ -49,6 +51,7 @@ class Tessellation(QtWidgets.QWidget):
         
         # Constructorof the QWidget class
         super().__init__()
+        self.setWindowTitle("Tessellation")
         
         self.polygon_information = PolygonInformation(polygon_type, nb_polygon_per_line, central_symmetry, axial_symmetry)
         
@@ -250,44 +253,11 @@ class Tessellation(QtWidgets.QWidget):
         # Call the painter of the widget
         painter = QtGui.QPainter(self)
         
-        indice = 0
         
         for poly in self.polygon_information.get_polygon_list():
-            
-            if(self.color == 'rainbow'):
-                painter.setBrush(Qt.QColor(COLOR_ALLOWED[indice % (len(COLOR_ALLOWED) - 1)]))
-                indice += 1
-            else:
-                painter.setBrush(Qt.QColor(self.color))
-            
+            painter.setBrush(Qt.QColor(self.color))
             painter.drawPolygon(poly)
-       
-    def mouseReleaseEvent(self, event):
-        """
-        Method called when the user release the mouse over the widget
-
-        Parameters
-        ----------
-        event : QMOUSEEVENT
-            event cause by the release of the mouse.
-
-        Returns
-        -------
-        None.
-
-        """
-        
-        if(self.point_to_move):
            
-            # Used to call PaintEvent()
-            self.update()
-            
-            # If the user release the mouse, there is no more point to move 
-            self.point_to_move = False
-            
-            # To know at the next mouse press if a point is added
-            self.polygon_information.added_point = False
-        
     def mouseMoveEvent(self, event):
         """
         Method called when the user move the mouse over the widget
@@ -316,6 +286,32 @@ class Tessellation(QtWidgets.QWidget):
         # Used to call PaintEvent()
         self.update()
        
+    def mouseReleaseEvent(self, event):
+        """
+        Method called when the user release the mouse over the widget
+
+        Parameters
+        ----------
+        event : QMOUSEEVENT
+            event cause by the release of the mouse.
+
+        Returns
+        -------
+        None.
+
+        """
+        
+        if(self.point_to_move):
+           
+            # Used to call PaintEvent()
+            self.update()
+            
+            # If the user release the mouse, there is no more point to move 
+            self.point_to_move = False
+            
+            # To know at the next mouse press if a point is added
+            self.polygon_information.added_point = False
+            
     def mousePressEvent(self, event):
 
             search_area = self.find_search_area(event.pos())

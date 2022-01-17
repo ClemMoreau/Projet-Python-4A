@@ -8,6 +8,7 @@ from view.loadWindow import LoadWindow
 from PyQt5 import QtWidgets
 import sys
 
+""" Module used to launch the application"""
 if __name__ == '__main__':
 
     SettingsWindow.set_main_app(QtWidgets.QApplication(sys.argv))    

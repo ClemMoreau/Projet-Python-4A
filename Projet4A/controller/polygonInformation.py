@@ -19,9 +19,6 @@ class PolygonInformation(object):
     
     Attributes
     ----------
-    polygon : POLYGON
-        polygon used to get information about polygons and generate it
-    
     polygon_type : STRING
         type of the current polygon 
         
@@ -78,7 +75,7 @@ class PolygonInformation(object):
 
         """
         
-        
+        #mettre un switch
         if (polygon_type == "Square"):
             polygon = Square(SettingsWindow.max_screen_size, 
                              nb_polygon_per_line)
@@ -89,13 +86,11 @@ class PolygonInformation(object):
             polygon = Hexagon(SettingsWindow.max_screen_size,
                               nb_polygon_per_line)
         
-        self.polygon = polygon
-        
         self.polygon_type = (str(type(polygon)))
         
-        self.polygon_list = self.polygon.generate_poly()
+        self.polygon_list = polygon.generate_poly()
         
-        self.polygon_coordinate = [[] for i in range(self.get_polygon().get_size()[1] + 1)]
+        self.polygon_coordinate = [[] for i in range(polygon.get_size()[1] + 1)]
         self.generate_coordinates()
         
         self.fixed_points = []
@@ -116,19 +111,6 @@ class PolygonInformation(object):
         #   GETTERS   #
         # =========== #
         
-    def get_polygon(self):
-        """
-        Getter of the polygon attribute
-
-        Returns
-        -------
-        POLYGON
-            Polygon generated to draw the tesselation.
-
-        """
-        
-        return self.polygon
-    
     def get_polygon_type(self):
         """
         Getter of the polygon_type attribute
@@ -202,22 +184,6 @@ class PolygonInformation(object):
         # =========== #
         #   SETTERS   #
         # =========== #
-
-    def set_polygon(self, polygon):
-        """
-        Setter of the polygon attribute
-
-        Parameters
-        ----------
-        polygon : POLYGON
-            new polygon to set in the tesselation.
-
-        Returns
-        -------
-        None.
-
-        """
-        self.polygon = polygon
 
     def set_polygon_type(self, polygon_type):
         """
@@ -332,7 +298,7 @@ class PolygonInformation(object):
             for j in range(poly.count()):
                 
                 # To avoid to to go past the list
-                if (0 <= poly.at(j).y() <= self.polygon.size[1] + 1): 
+                if (0 <= poly.at(j).y() <= SettingsWindow.get_max_screen_size()[1] + 1): 
                 
                     # Polygon added in list at the indice : point.y coordinate    
                     self.polygon_coordinate[int(poly.at(j).y())].append(poly)
@@ -350,7 +316,7 @@ class PolygonInformation(object):
         None.
 
         """
-        
+        self.fixed_points.clear()
         for poly in self.polygon_list:
             
             for i in range(0,poly.count()):

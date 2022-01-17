@@ -1,6 +1,7 @@
 from model.polygon import Polygon
 from PyQt5 import QtGui, QtCore
 
+
 class Square(Polygon):
     """
     Class which represent squares
@@ -85,8 +86,8 @@ class Square(Polygon):
 
         Returns
         -------
-        polygon_list : list<Square>
-            DESCRIPTION.
+        polygon_list : list<QPolygon>
+        generated list of square.
 
         """
         polygon_list = []

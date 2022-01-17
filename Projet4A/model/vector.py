@@ -212,7 +212,7 @@ class Vector(object):
 
         Returns
         -------
-        TUPLE<FLOAT>
+        NUMPY.NDARRAY
             Distance between point in param and self.
 
         """
